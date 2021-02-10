@@ -4,7 +4,7 @@ import { UserEntity} from "./entities/UserEntity";
 
 // session information
 export interface SessionInfo {
-  userId: string | undefined;
+  id: string | undefined;
   requestCount: number;
 }
 
@@ -29,20 +29,20 @@ export class Context {
   }
 
   login = (userId: string) => {
-    this.session.userId = userId;
+    this.session.id = userId;
   };
 
   logout = () => {
-    this.session.userId = undefined;
+    this.session.id = undefined;
     this.viewer = undefined;
   };
 
-  isViewer = (userId: string) => {
+  isViewer = (id: string) => {
     if (!this.viewer) {
       return false;
     }
 
-    return this.viewer.userId === userId;
+    return this.viewer.id === id;
   };
 
   isLoggedIn = () => {

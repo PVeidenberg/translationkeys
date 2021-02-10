@@ -33,7 +33,7 @@ export interface ApolloContext {
 
 // default session contents
 export const sessionDefaults: SessionInfo = {
-    userId: undefined,
+    id: undefined,
     requestCount: 0,
 };
 

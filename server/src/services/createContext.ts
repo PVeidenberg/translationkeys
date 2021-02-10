@@ -6,7 +6,7 @@ import { UserEntity } from "../entities/UserEntity";
 export async function createContext(request: Request) {
   // initialize session and make the viewer a real user entity instance if available
   const session = (request.session as unknown) as SessionInfo;
-  const viewer = session.userId ? await UserEntity.findOne({ where: { id: session.userId } }) : undefined;
+  const viewer = session.id ? await UserEntity.findOne({ where: { id: session.id } }) : undefined;
 
   // extract debug request headers (no available when using websocket transport)
   const clientOperationHeader = request.headers["x-operation"];
