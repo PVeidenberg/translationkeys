@@ -1,0 +1,26 @@
+.projects-view {
+	align-content: center;
+}
+
+.projects-title {
+	padding: 20px 30px 0;
+	font-size: 40px;
+	margin-bottom: 10px;
+}
+
+.projects-input-container {
+	display: flex;
+	margin-left: 30px;
+	height: 50px;
+	width: 70%;
+	margin-bottom: 10px;
+}
+.projects-input-button {
+	width: 15%;
+}
+.projects-input-field {
+	outline: none;
+	padding-left: 10px;
+	font-size: 20px;
+	width: 85%;
+}

@@ -1,0 +1,48 @@
+{
+    "clientBaseUrl": "http://localhost:3000",
+    "server": {
+      "host": "localhost",
+      "port": 5000
+    },
+    "graphql": {
+      "playground": false,
+      "introspection": false,
+      "debug": false
+    },
+    "session": {
+      "secret": "D7Vr37Kb6JBqBHBbe79qXkXaHnLemjfw",
+      "maxAge": 31104000000
+    },
+    "database": {
+      "host": "localhost",
+      "port": 5432,
+      "username": "",
+      "password": "",
+      "database": "translatekeys",
+      "maxQueryExecutionTime": 500,
+      "sync": false
+    },
+    "email": {
+      "enabled": false,
+      "apiKey": "",
+      "fromEmail": "",
+      "fromName": "",
+      "inboundEmailDomain": "",
+      "webhookKey": "",
+      "webhookCallbackUrl": ""
+    },
+    "rules": {
+      "validateEmailValidForSeconds": 2678400
+    },
+    "facebook": {
+      "clientId": "",
+      "clientSecret": "",
+      "callbackUrl": ""
+    },
+    "google": {
+      "clientId": "",
+      "clientSecret": "",
+      "callbackUrl": ""
+    }
+  }
+  
