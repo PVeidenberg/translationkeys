@@ -12,6 +12,7 @@ export default function LogInForm(props: any) {
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
+    console.log("handleLoginFormSubmit");
   }
 
   return (

@@ -40,6 +40,7 @@ export default function SignupForm(props: any) {
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
+    console.log("handleSubmitSignup");
   }
 
   return (
