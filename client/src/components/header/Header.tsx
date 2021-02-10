@@ -41,7 +41,7 @@ export default function Header(props: any) {
   return (
     <div className="header-container">
       <button className="logout-button" onClick={() => handleLogout()}>
-        LOG OUT
+        LOG OUT develop
       </button>
 
       <>
