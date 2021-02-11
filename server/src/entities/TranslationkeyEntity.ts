@@ -7,7 +7,6 @@ import {
     JoinTable,
     PrimaryGeneratedColumn,
 } from "typeorm";
-import { fieldLength } from "../constants";
 import { ProjectEntity } from "./ProjectEntity";
 import { TagEntity } from "./TagEntity";
   
@@ -16,7 +15,7 @@ export class TranslationkeyEntity extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     readonly id!: string;
 
-    @Column({ type: "varchar", length: fieldLength.name })
+    @Column({ type: "text" })
     translationkeyName!: string;
 
     @ManyToOne(() => ProjectEntity, translationkey => translationkey.translationkeys)

@@ -5,7 +5,6 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from "typeorm";
-  import { fieldLength } from "../constants";
   import { LanguageEntity } from "./LanguageEntity";
   import { TagEntity } from "./TagEntity";
   import { TranslationkeyEntity } from "./TranslationkeyEntity";
@@ -15,7 +14,7 @@ export class ProjectEntity extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     readonly id!: string;
 
-    @Column({ type: "varchar", length: fieldLength.name })
+    @Column({ type: "text"})
     projectName!: string;
 
     @OneToMany(() => LanguageEntity, language => language.project)

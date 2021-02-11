@@ -6,8 +6,8 @@ import {
     JoinTable,
     PrimaryGeneratedColumn,
 } from "typeorm";
-import { fieldLength } from "../constants";
 import { ProjectEntity } from "./ProjectEntity";
+import { fieldLength } from "../constants";
 import { generateRandomString } from "../services/generateRandomString";
 import { getKeyedHash } from "../services/getKeyedHash";
 // import { config } from "../config";
@@ -22,8 +22,7 @@ export enum UserRole {
 }
 
 export interface RegisterUserInfo {
-    firstName: string;
-    familyName: string;
+    name: string;
     email: string;
     password: string;
     roles: UserRole[];
@@ -35,28 +34,25 @@ export class UserEntity extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     readonly id!: string;
 
-    @Column({ type: "varchar", length: fieldLength.name })
-    firstName!: string;
+    @Column({ type: "text" })
+    name!: string;
 
-    @Column({ type: "varchar", length: fieldLength.name })
-    familyName!: string;
-
-    @Column({ type: "varchar", length: fieldLength.email })
+    @Column({ type: "text" })
     email!: string;
     
-    @Column({ type: "varchar", length: fieldLength.password })
+    @Column({ type: "text"})
     password!: string;
 
-    @Column({ type: "varchar", unique: true, nullable: true })
+    @Column({ type: "text", unique: true, nullable: true })
     validateEmailToken!: string | null;
   
     @Column({ type: "date", nullable: true })
     validateEmailExpiryDate!: Date | null;
 
-    @Column({ type: "varchar", nullable: true, length: fieldLength.hash })
+    @Column({ type: "text", nullable: true })
     passwordSalt!: string | null;
 
-    @Column({ type: "varchar", nullable: true, length: fieldLength.hash })
+    @Column({ type: "text", nullable: true })
     passwordHash!: string | null;
 
     // @Column({
@@ -76,8 +72,7 @@ export class UserEntity extends BaseEntity {
     
         const user = await UserEntity.create({
             email: info.email,
-            firstName: info.firstName,
-            familyName: info.familyName,
+            name: info.name,
             passwordSalt,
             passwordHash,
             // ...UserEntity.generateValidateEmailToken(),

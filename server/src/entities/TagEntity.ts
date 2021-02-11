@@ -5,7 +5,7 @@ import {
     ManyToOne,
     PrimaryGeneratedColumn,
 } from "typeorm";
-  import { fieldLength } from "../constants";
+
   import { ProjectEntity } from "./ProjectEntity";
 
 @Entity("tag")
@@ -13,7 +13,7 @@ export class TagEntity extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   readonly id!: string;
 
-  @Column({ type: "varchar", length: fieldLength.name })
+  @Column({ type: "text" })
   tagName!: string;
 
   @ManyToOne(() => ProjectEntity, project => project.tags)

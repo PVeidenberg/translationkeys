@@ -12,10 +12,10 @@ import {
 
 @Entity()
 export class Session extends BaseEntity {
-  @PrimaryColumn("varchar", { length: 255 })
+  @PrimaryColumn("text")
   sessionId!: string;
 
-  @Column({ type: "varchar", nullable: true, length: 36 })
+  @Column({ type: "text", nullable: true})
   @Index()
   userId!: string;
 

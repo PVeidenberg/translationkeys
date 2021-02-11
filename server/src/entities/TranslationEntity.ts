@@ -4,13 +4,12 @@ import {
     Entity,
     PrimaryGeneratedColumn,
 } from "typeorm";
-  import { fieldLength } from "../constants";
 
 @Entity("translation")
 export class TranslationEntity extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   readonly id!: string;
 
-  @Column({ type: "varchar", length: fieldLength.long })
+  @Column({ type: "text"})
   translationValue!: string;
 }
