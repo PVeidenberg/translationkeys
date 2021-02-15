@@ -1,8 +1,17 @@
 import React, { useState } from "react";
 import "./signup-form.css";
-import { useMutation, useLazyQuery, gql, useQuery } from "@apollo/client";
-import Paths from "../../Paths";
-import { Redirect, useHistory } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Field } from "../../components/Field/Field";
+// import { useMutation, useLazyQuery, gql, useQuery } from "@apollo/client";
+// import Paths from "../../Paths";
+import { useHistory } from "react-router-dom";
+import { validateEmail } from "../../validators/validateEmail";
+import { validateMinimumLength } from "../../validators/validateMinimumLength";
+// import { getFieldErrors } from "../../services/getFieldErrors";
+import { ReactComponent as EmailIcon } from "../../theme/icons/email-icon.svg";
+import { ReactComponent as PasswordIcon } from "../../theme/icons/password-icon.svg";
+import { ReactComponent as PersonIcon } from "../../theme/icons/person-icon.svg";
+import { validateSamePassword } from "../../validators/validateSamePassword";
 
 interface SignupFormValues {
   name: string;
@@ -12,6 +21,7 @@ interface SignupFormValues {
 }
 
 // registration mutation (generates useRegisterMutation hook)
+/*
 gql`
   mutation Register(
     $name: String!
@@ -28,80 +38,54 @@ gql`
       ...UserInfo
     }
   }
-`;
+`;*/
 
 export default function SignupForm(props: any) {
+  const { register, handleSubmit, errors, watch } = useForm<SignupFormValues>();
   const history = useHistory();
+  const onSubmit = (data:any) => console.log(data);
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
+  // get combined client and server side field errors
+  // const fieldErrors = getFieldErrors(registerResult.error, errors);
 
-  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
-    e.preventDefault();
-    console.log("handleSubmitSignup");
-  }
+  // get the other password to check against
+  const repeatPassword = watch("repeatPassword");
 
   return (
-    <div className="signup-form">
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <div className="form-row">
-          <label>Name:</label>
-          <input
-            className="input"
-            type="text"
-            id="signFormNameField"
-            name="signFormNameField"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-
-        <div className="form-row">
-          <label>E-mail address:</label>
-          <input
-            className="input"
-            type="signupFormEmail"
-            id="signupFormEmail"
-            name="user_mail"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-
-        <div className="form-row">
-          <label>Password:</label>
-          <input
-            className="input"
-            type="password"
-            id="signupFormPassword"
-            name="signupFormPassword"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-
-        <div className="form-row">
-          <label>Repeat password:</label>
-          <div className="parallel">
-            <input
-              className="input"
-              type="password"
-              id="repeat-signupFormPassword"
-              name="repeatSignupFormPassword"
-              value={repeatPassword}
-              onChange={(e) => setRepeatPassword(e.target.value)}
-            />
-          </div>
-        </div>
-
-        <div className="form-row">
-          <button className="button" disabled={false} type="submit">
-            {"Sign up"}
-          </button>
-        </div>
+    <form className="signup-form" onSubmit={handleSubmit(onSubmit)}>
+        <Field
+          type="text"
+          name="name"
+          label={"Full name"}
+          leading={<PersonIcon />}
+          error={errors.name}
+          register={register({ required: "Name is required" })}
+        />
+        <Field
+          type="email"
+          name="email"
+          label="Email"
+          leading={<EmailIcon />}
+          error={errors.email}
+          register={register({ required: "Email is required", validate: validateEmail })}
+        />
+        <Field
+          type="password"
+          name="password"
+          label="Password"
+          leading={<PasswordIcon />}
+          error={errors.password}
+          register={register({ validate: validateMinimumLength(8) })}
+        />
+        <Field
+          type="password"
+          name="repeatPassword"
+          label="Repeat password"
+          leading={<PasswordIcon />}
+          error={errors.repeatPassword}
+          register={register({ validate: validateSamePassword(repeatPassword) })}
+        />
+        <input type="submit" />
       </form>
-    </div>
   );
 }

@@ -1,8 +1,9 @@
 .signup-form {
   display: flex;
-  flex-grow: 1;
+  flex-grow: 2;
   align-items: flex-start;
   justify-content: center;
+  background-color: red;
 }
 
 .form-row {
