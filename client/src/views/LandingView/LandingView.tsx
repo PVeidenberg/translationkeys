@@ -1,6 +1,6 @@
 import * as React from "react";
 import Header from "../../components/header/Header";
-import "./landing-view.css";
+import "./landing-view.scss";
 
 export default function LandingView(props: any) {
   return (

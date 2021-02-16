@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./projects-view.css";
+import "./projects-view.scss";
 import Header from "../../components/header/Header";
 import { FormEvent } from "react";
 import ProjectNameContainer from "../../components/project-name-container/ProjectNameContainer";

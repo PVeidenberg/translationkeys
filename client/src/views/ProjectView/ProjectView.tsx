@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import * as React from "react";
-import "./project-view.css";
+import "./project-view.scss";
 import { RouteComponentProps, Link } from "react-router-dom";
 import TranslationsTable from "../../components/table/TranslationsTable";
 import { FormEvent } from "react";

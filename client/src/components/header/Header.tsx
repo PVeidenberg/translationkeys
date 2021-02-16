@@ -1,5 +1,5 @@
 import * as React from "react";
-import "./header.css";
+import "./header.scss";
 import { useMutation } from "@apollo/client";
 import { useHistory, useLocation, Redirect } from "react-router-dom";
 import Paths from "../../Paths";

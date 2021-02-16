@@ -1,7 +1,7 @@
 import * as React from "react";
 import Header from "../../components/header/Header";
 import LoginForm from "../../components/loginForm/LogInForm";
-import "./login-view.css";
+import "./login-view.scss";
 
 export default function LoginView(props: any) {
   return (

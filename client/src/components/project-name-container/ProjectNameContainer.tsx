@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { FormEvent, useState } from "react";
-import "./project-name-container.css";
+import "./project-name-container.scss";
 import { useMutation } from "@apollo/client";
 
 export default function ProjectNameContainer(props: { project: any }) {
