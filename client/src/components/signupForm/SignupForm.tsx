@@ -50,6 +50,7 @@ export default function SignupForm(props: any) {
 
   // get the other password to check against
   const otherPassword = watch("password");
+  console.log(errors);
 
   return (
     <div className="signup-form">
@@ -105,7 +106,17 @@ export default function SignupForm(props: any) {
         {errors.repeatPassword ? (
           <span className="error-text">Passwords do not match.</span>
         ) : null}
-        <input className="button" type="submit" value="Sign in" />
+        <input
+          className=
+          type="submit"
+          disabled={
+            errors.email === null &&
+            errors.name === null &&
+            errors.password === null &&
+            errors.repeatPassword === null
+          }
+          value="Sign in"
+        />
       </form>
     </div>
   );
