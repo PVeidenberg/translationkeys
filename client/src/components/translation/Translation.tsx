@@ -1,30 +1,18 @@
 import { useEffect, useState } from "react";
 import * as React from "react";
+import "./translation.scss";
 
 import { useMutation } from "@apollo/client";
 
-// interface StyledTranslationProps {
-// 	isNotSaved?: boolean;
-// }
+interface StyledTranslationProps {
+	isNotSaved?: boolean;
+}
 
-// const StyledTranslation = styled.div<StyledTranslationProps>`
-// 	background: ${p => p.isNotSaved && '#dae4ed'};
-// 	padding: 10px;
-// 	min-width: 50px;
-// 	cursor: pointer;
-// 	flex-grow: 1;
-// 	white-space: pre-wrap;
-// `;
-
-// const StyledButton = styled.button`
-// 	width: 100%;
-// `;
-
-// interface TranslationProps {
-// 	translations: Array<ProjectView_project_keys_nodes_translation_nodes | null>;
-// 	language: ProjectView_project_languages_nodes | null;
-// 	keyId: number;
-// }
+interface TranslationProps {
+	translations: Array<string | null>;
+	language: string | null;
+	keyId: number;
+}
 
 // const ADD_TRANSLATION = gql`
 // 	mutation AddTranslation($name: String!, $keyId: Int!, $languageId: Int!) {
@@ -48,24 +36,25 @@ import { useMutation } from "@apollo/client";
 // 			}
 // 		}
 // 	}
+
 // `;
-// const Translation = (props: any) => {
-// 	const { translations, language, keyId } = props;
+export default function Translation(props: any) {
+	const { translations, language, keyId } = props;
 
-// 	if (!language) {
-// 		return null;
-// 	}
+	if (!language) {
+		return null;
+	}
 
-// 	const existingTranslation = translations.find(trns =>
-// 		!trns || !trns.language ? false : trns.language.id === language.id,
-// 	);
-// 	const initialValue = existingTranslation ? existingTranslation.name : '';
+	const existingTranslation = translations.find((trns:any) =>
+		!trns || !trns.language ? false : trns.language.id === language.id,
+	);
+	const initialValue = existingTranslation ? existingTranslation.name : '';
 
-// 	const [isActive, setIsActive] = useState(false);
-// 	const [currentValue, setCurrentValue] = useState(initialValue);
-// 	const isNotSaved = initialValue !== currentValue;
+	const [isActive, setIsActive] = useState(false);
+	const [currentValue, setCurrentValue] = useState(initialValue);
+	const isNotSaved = initialValue !== currentValue;
 
-// 	let ref: any = {};
+	let ref: any = {};
 
 // 	useEffect(() => setCurrentValue(initialValue), [initialValue]);
 // 	useEffect(() => ref.focus(), [isActive]);
@@ -73,69 +62,66 @@ import { useMutation } from "@apollo/client";
 // 	const [updateTranslation] = useMutation(UPDATE_TRANSLATION);
 // 	const [addTranslation] = useMutation(ADD_TRANSLATION);
 
-// 	// console.log({ initialValue, replaced: initialValue.replace(/[\n\r]+/g, '<br>') });
+	console.log({ initialValue, replaced: initialValue.replace(/[\n\r]+/g, '<br>') });
 
-// 	return (
-// 		<>
-// 			<StyledTranslation
-// 				ref={(el: any) => {
-// 					ref = el;
-// 				}}
-// 				isNotSaved={isNotSaved}
-// 				contentEditable={isActive}
-// 				suppressContentEditableWarning={true}
-// 				onClick={e => {
-// 					setIsActive(true);
-// 				}}
-// 				onKeyUp={e => setCurrentValue(ref.innerText)}
-// 			>
-// 				{(existingTranslation && existingTranslation.name) || ''}
-// 			</StyledTranslation>
-// 			{isNotSaved && (
-// 				<>
-// 					{existingTranslation ? (
-// 						<form onSubmit={e => handleUpdateTranslation(updateTranslation, existingTranslation.nodeId, ref, e)}>
-// 							<StyledButton type="submit">&#x2713;</StyledButton>
-// 						</form>
-// 					) : (
-// 						<form onSubmit={e => handlAddTranslation(addTranslation, language.id, keyId, ref, e)}>
-// 							<StyledButton type="submit">&#x2713;</StyledButton>
-// 						</form>
-// 					)}
-// 				</>
-// 			)}
-// 		</>
-// 	);
-// };
+	return (
+		<>
+			<div className="styled-translation"
+				ref={(el: any) => {
+					ref = el;
+				}}
+				contentEditable={isActive}
+				suppressContentEditableWarning={true}
+				onClick={(e:any) => {
+					setIsActive(true);
+				}}
+				onKeyUp={(e:any) => setCurrentValue(ref.innerText)}
+			>
+				{(existingTranslation && existingTranslation.name) || ''}
+            </div>
+			{isNotSaved && (
+				<>
+					{existingTranslation ? (
+						<form onSubmit={e => handleUpdateTranslation(null, existingTranslation.nodeId, ref, e)}>
+							<button className="styled-button" type="submit">&#x2713;</button>
+						</form>
+					) : (
+						<form onSubmit={e => handlAddTranslation(null, language.id, keyId, ref, e)}>
+							<button type="submit">&#x2713;</button>
+						</form>
+					)}
+				</>
+			)}
+		</>
+	);
+};
 
-// const handlAddTranslation = (
-// 	addTranslation: any,
-// 	languageId: number | null,
-// 	keyId: number | null,
-// 	ref: any,
-// 	e: any,
-// ) => {
-// 	e.preventDefault();
-// 	if (!ref) {
-// 		return;
-// 	}
+const handlAddTranslation = (
+	addTranslation: any,
+	languageId: number | null,
+	keyId: number | null,
+	ref: any,
+	e: any,
+) => {
+	e.preventDefault();
+	if (!ref) {
+		return;
+	}
 
-// 	addTranslation({
-// 		refetchQueries: ['ProjectView'],
-// 		variables: { name: ref.innerText, languageId, keyId },
-// 	});
-// };
+	addTranslation({
+		refetchQueries: ['ProjectView'],
+		variables: { name: ref.innerText, languageId, keyId },
+	});
+};
 
-// const handleUpdateTranslation = (updateTranslation: any, translationId: string | null, ref: any, e: any) => {
-// 	e.preventDefault();
-// 	if (!ref) {
-// 		return;
-// 	}
+const handleUpdateTranslation = (updateTranslation: any, translationId: string | null, ref: any, e: any) => {
+	e.preventDefault();
+	if (!ref) {
+		return;
+	}
 
-// 	updateTranslation({
-// 		refetchQueries: ['ProjectView'],
-// 		variables: { nodeId: translationId, name: ref.innerText },
-// 	});
-// };
-
-// export default Translation;
+	updateTranslation({
+		refetchQueries: ['ProjectView'],
+		variables: { nodeId: translationId, name: ref.innerText },
+	});
+};

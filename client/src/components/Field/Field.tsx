@@ -19,6 +19,7 @@ export const Field = React.forwardRef<HTMLInputElement, FieldProps>(
       type,
       name,
       label,
+      defaultValue,
       error,
       leading,
       register,
@@ -54,7 +55,12 @@ export const Field = React.forwardRef<HTMLInputElement, FieldProps>(
     return (
       <div className="form-row">
         <label>{label}</label>
-        <input className="input" type={type} name={name} ref={register} />
+        <input 
+        className="input"
+        type={type}
+        name={name}
+        defaultValue={defaultValue}
+        ref={register} />
       </div>
     );
   }

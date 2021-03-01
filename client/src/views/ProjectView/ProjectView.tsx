@@ -1,13 +1,18 @@
 import { gql } from "@apollo/client";
 import * as React from "react";
 import "./project-view.scss";
-import { RouteComponentProps, Link } from "react-router-dom";
+import { RouteComponentProps, Link, useHistory } from "react-router-dom";
+import ProjectHeader from "../../components/projectHeader/projectHeader";
 import TranslationsTable from "../../components/table/TranslationsTable";
 import { FormEvent } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 // import { PROJECT_VIEW_QUERY } from '../../queries';
 
 interface QueryProps {
+  id: string;
+}
+
+interface ProjectViewProps {
   id: string;
 }
 
@@ -70,124 +75,37 @@ const ADD_LANGUAGE = gql`
 		}
 	}
 `;*/
-/*
-const Header = styled.div`
-  font-size: 24px;
-  padding: 30px;
-  background: #dfdfdf;
-
-  a {
-    color: dodgerblue;
-    font-size: 16px;
-    position: absolute;
-    right: 30px;
-    top: 36px;
-  }
-`;
-
-const Controls = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-
-  form {
-    display: flex;
-    align-items: center;
-    position: relative;
-    padding: 20px 0 0 0;
-  }
-
-  input {
-    padding: 4px;
-    font-size: 18px;
-    flex: 1;
-    width: 100%;
-  }
-
-  button {
-    margin-left: 10px;
-    height: 100%;
-    min-width: 150px;
-    font-weight: bold;
-  }
-`;
-
-const TableContainer = styled.div`
-  overflow: auto;
-  padding: 30px;
-`;
-*/
 export default function ProjectView(props: any) {
-  //   console.log(props);
-  //   // const { loading, error, data: projectViewState } = useQuery(PROJECT_VIEW_QUERY);
+    const history = useHistory();
+     const { id, name } = props.location.state;
+     //makeMockData
 
-  //   // console.log(projectViewState);
-  //   // const [addKey] = useMutation(ADD_KEY);
-  //   // const [addLanguage] = useMutation(ADD_LANGUAGE);
+     // const { loading, error, data: projectViewState } = useQuery(PROJECT_VIEW_QUERY);
 
-  /*const inputKey = React.useRef<HTMLInputElement>(null);
-	const inputLanguage = React.useRef<HTMLInputElement>(null);
+     // console.log(projectViewState);
+     // const [addKey] = useMutation(ADD_KEY);
+     // const [addLanguage] = useMutation(ADD_LANGUAGE);
 
-	function handleAddKey(addKeyFn: any, projectId: number | null, event: FormEvent) {
-		event.preventDefault();
+  const handleAddKey = () => {
+    // add key to table
+  }
 
-		if (inputKey.current !== null && inputKey.current.value !== '') {
-			addKeyFn({
-				refetchQueries: ['ProjectView'],
-				variables: { name: inputKey.current.value, projectId },
-			});
-			inputKey.current.value = '';
-		}
-	}
-
-	function handleAddLanguage(addLanguageFn: any, projectId: number | null, event: FormEvent) {
-		event.preventDefault();
-
-		if (inputLanguage.current !== null && inputLanguage.current.value !== '') {
-			addLanguageFn({
-				refetchQueries: ['ProjectView'],
-				variables: { name: inputLanguage.current.value, projectId },
-			});
-			inputLanguage.current.value = '';
-		}
-	}*/
+  const handleAddLanguage = () => {
+    // add key to table
+  }
 
   return (
     <div className="view projects-view">
-      {/* {data && data.project ? (
-				<div key={data.project.nodeId}>
-					<Header>
-						<div>
-							<span>Project: </span>
-							<strong>{data.project.name}</strong>
-							<a href={`${process.env.REACT_APP_SERVER_URL}/project/${data.project.id}`} target="_blank">
-									Get JSON
-								</a>
-							<Link className="project-settings" to={`/project/settings`}>
-								<p className="project-setting-link-text">Settings</p>
-							</Link>
-						</div>
-						
-						<Controls>
-							<form onSubmit={handleAddKey.bind(null, addKey, data.project && data.project.id)}>
-								<input ref={inputKey} />
-								<button type="submit">Add Key</button>
-							</form>
-
-							<form onSubmit={handleAddLanguage.bind(null, addLanguage, data.project && data.project.id)}>
-								<input ref={inputLanguage} />
-								<button type="submit">Add Language</button>
-							</form>
-						</Controls>
-					</Header>
-
-					<TableContainer>
-						<TranslationsTable languages={data.project.languages.nodes} keys={data.project.keys.nodes} />
-					</TableContainer>
+       {props && props.project ? (
+				<div key={props.project.nodeId}>
+          <ProjectHeader/>
+          <div className="table-container">
+            <TranslationsTable languages={props.project.languages.nodes} keys={props.project.keys.nodes} />
+        </div>  
 				</div>
 			) : (
 				<p>Loading...</p>
-			)} */}
+			)} *
     </div>
   );
 }

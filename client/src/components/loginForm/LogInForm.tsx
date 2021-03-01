@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./login-form.scss";
+import classnames from "classnames";
 import { useMutation, useLazyQuery, gql, useQuery } from "@apollo/client";
 import Paths from "../../Paths";
 import { Redirect, useHistory } from "react-router-dom";
@@ -18,30 +19,49 @@ interface LoginFormValues {
 export default function LogInForm(props: any) {
   const { register, handleSubmit, errors, watch } = useForm<LoginFormValues>();
   const history = useHistory();
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = (data: any) => {
+    history.push(Paths.projects);
+    console.log(data);
+  }
 
   return (
-    <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
-      <Field
-        type="email"
-        name="email"
-        label="Email"
-        leading={<EmailIcon />}
-        error={errors.email}
-        register={register({
-          required: "Email is required",
-          validate: validateEmail,
-        })}
-      />
-      <Field
-        type="password"
-        name="password"
-        label="Password"
-        leading={<PasswordIcon />}
-        error={errors.password}
-        register={register({ validate: validateMinimumLength(8) })}
-      />
-      <input type="submit" />
-    </form>
+    <div className="login-form">
+      <form className="form" onSubmit={handleSubmit(onSubmit)}>
+        <Field
+          type="email"
+          name="email"
+          label="Email"
+          defaultValue=""
+          leading={<EmailIcon />}
+          error={errors.email}
+          register={register({
+            required: "Email is required",
+            validate: validateEmail,
+          })}
+        />
+        {errors.email ? (
+          <span className="error-text">Email field cannot be empty.</span>
+        ) : null}
+        <Field
+          type="password"
+          name="password"
+          label="Password"
+          defaultValue=""
+          leading={<PasswordIcon />}
+          error={errors.password}
+          register={register({ validate: validateMinimumLength(1) })}
+        />
+        {errors.password ? (
+          <span className="error-text">
+            Password must be more than 7 characters long.
+          </span>
+        ) : null}
+        <input
+          className={classnames("button")}
+          type="submit"
+          value="Log in"
+        />
+      </form>
+    </div>
   );
 }

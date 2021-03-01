@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import classnames from "classnames";
 import "./signup-form.scss";
 import { useForm } from "react-hook-form";
 import { Field } from "../../components/Field/Field";
@@ -12,6 +13,7 @@ import { ReactComponent as EmailIcon } from "../../theme/icons/email-icon.svg";
 import { ReactComponent as PasswordIcon } from "../../theme/icons/password-icon.svg";
 import { ReactComponent as PersonIcon } from "../../theme/icons/person-icon.svg";
 import { validateSamePassword } from "../../validators/validateSamePassword";
+import Paths from "../../Paths";
 
 interface SignupFormValues {
   name: string;
@@ -43,14 +45,36 @@ gql`
 export default function SignupForm(props: any) {
   const { register, handleSubmit, errors, watch } = useForm<SignupFormValues>();
   const history = useHistory();
-  const onSubmit = (data: any) => console.log(data);
-
+  const onSubmit = (data: any) => {
+    history.push(Paths.projects);
+    console.log(data);
+  }
+  
   // get combined client and server side field errors
   // const fieldErrors = getFieldErrors(registerResult.error, errors);
-
+  
   // get the other password to check against
-  const otherPassword = watch("password");
-  console.log(errors);
+  const name = watch("name");
+  const email = watch("email");
+  const password = watch("password");
+  const repeatPassword = watch("repeatPassword");
+
+  const hasErrors = (
+    (errors.email !== undefined || (email === undefined || email === "")) ||
+    (errors.name !== undefined || (name === undefined || name === "")) ||
+    (errors.password !== undefined || (password === undefined || password === "" )) ||
+    (errors.repeatPassword !== undefined || (repeatPassword === undefined || repeatPassword === ""))
+    )
+
+  console.log(hasErrors);
+  console.log(email);
+  console.log(name);
+  console.log(password);
+  console.log(repeatPassword);
+  console.log(errors.email);
+  console.log(errors.name);
+  console.log(errors.password);
+  console.log(errors.repeatPassword );
 
   return (
     <div className="signup-form">
@@ -59,17 +83,19 @@ export default function SignupForm(props: any) {
           type="text"
           name="name"
           label={"Full name"}
+          defaultValue=""
           leading={<PersonIcon />}
           error={errors.name}
           register={register({ required: "Name is required" })}
         />
-        {errors.name && errors.name.type === "required" ? (
+        {errors.name ? (
           <span className="error-text">Name field cannot be empty</span>
         ) : null}
         <Field
           type="email"
           name="email"
           label="Email"
+          defaultValue=""
           leading={<EmailIcon />}
           error={errors.email}
           register={register({
@@ -84,9 +110,10 @@ export default function SignupForm(props: any) {
           type="password"
           name="password"
           label="Password"
+          defaultValue=""
           leading={<PasswordIcon />}
           error={errors.password}
-          register={register({ validate: validateMinimumLength(8) })}
+          register={register({ validate: validateMinimumLength(1) })}
         />
         {errors.password ? (
           <span className="error-text">
@@ -97,24 +124,20 @@ export default function SignupForm(props: any) {
           type="password"
           name="repeatPassword"
           label="Repeat password"
+          defaultValue=""
           leading={<PasswordIcon />}
           error={errors.repeatPassword}
           register={register({
-            validate: validateSamePassword(otherPassword),
+            validate: validateSamePassword(password),
           })}
         />
         {errors.repeatPassword ? (
           <span className="error-text">Passwords do not match.</span>
         ) : null}
         <input
-          className=
+          className={classnames("button")}
           type="submit"
-          disabled={
-            errors.email === null &&
-            errors.name === null &&
-            errors.password === null &&
-            errors.repeatPassword === null
-          }
+          disabled={hasErrors}
           value="Sign in"
         />
       </form>

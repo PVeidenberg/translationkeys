@@ -1,0 +1,25 @@
+.styled-table {
+    border-collapse: collapse;
+  height: 100%;
+
+  th,
+  td {
+    border: 1px solid #dfdfdf;
+  }
+
+  th {
+    padding: 10px;
+    background-color: #dfdfdf;
+    text-align: left;
+  }
+
+  tr > td:first-child {
+    background-color: #f4f4f4;
+  }
+}
+
+.translation-container {
+    height: 100%;
+	display: flex;
+	flex-direction: column;
+}

@@ -1,27 +1,39 @@
 import React, { useState } from "react";
 import "./projects-view.scss";
 import Header from "../../components/header/Header";
-import { FormEvent } from "react";
-import ProjectNameContainer from "../../components/project-name-container/ProjectNameContainer";
+import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+import ProjectNameContainer from "../../components/projectNameContainer/ProjectNameContainer";
 import { useLazyQuery, useQuery, useMutation } from "@apollo/client";
 import { Redirect } from "react-router-dom";
 import Paths from "../../Paths";
 
-export default function ProjectsView(props: any) {
-  const [projectName, setProjectName] = useState("");
+interface ProjectsFormValues {
+  projectName: string;
+}
 
-  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+export default function ProjectsView(props: any) {
+  const history = useHistory();
+  const mockData = [{id: 1, name: "Smart-ID"}, {id: 2, name: "DagCoin"}]
+
+  const { register, handleSubmit, errors, watch } = useForm<ProjectsFormValues>();
+  const onSubmit = (data: any) => {
+    history.push(Paths.projects);
+    console.log(data);
+  }
+
+  /*async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     console.log("handleSubmitProjectsView");
     setProjectName("");
-  }
+  }*/
 
   return (
     <div className="view projects-view">
       <Header />
       <div className="projects-title">Projects</div>
       <form
-        onSubmit={(e) => handleSubmit(e)}
+        onSubmit={handleSubmit(onSubmit)}
         className="projects-input-container"
       >
         <input
@@ -30,14 +42,22 @@ export default function ProjectsView(props: any) {
           type="text"
           id="name"
           name="name"
-          value={projectName}
-          onChange={(e) => setProjectName(e.target.value)}
+          defaultValue=""
+          ref={register}
         />
 
         <button className="projects-input-button" type="submit">
           Add Project
         </button>
       </form>
+      {
+        mockData.map((project:any, index:number) => {
+          if (!project) {
+            return;
+          }
+          return <ProjectNameContainer key={project.id} project={project} index={index} />;
+        })
+      }
       {/* {getAllProjectsState && getAllProjectsState.getAllProjects ? (
 				getAllProjectsState.getAllProjects.map((project: any) => {
 					if (!project) {

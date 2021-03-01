@@ -4,13 +4,15 @@ import { FormEvent, useState } from "react";
 import "./project-name-container.scss";
 import { useMutation } from "@apollo/client";
 
-export default function ProjectNameContainer(props: { project: any }) {
+export default function ProjectNameContainer(props: { project: any, index: number }) {
   const [isDeletingOpened, setIsDeletingOpened] = useState(false);
 
   const { name, id } = props.project;
+  const { index } = props;
 
-  function handleDeleteProject(projectName: string, e: FormEvent) {
+  const handleDeleteProject = (projectName: string, e:any) => {
     e.preventDefault();
+
   }
 
   const deletingButtons = (
@@ -31,10 +33,10 @@ export default function ProjectNameContainer(props: { project: any }) {
   );
 
   return (
-    <div className="project-name-container" key={name}>
+    <div className="project-name-container" key={index}>
       <Link
         className="project-name-link"
-        to={{ pathname: `/project/${name}`, state: { id } }}
+        to={{ pathname: `/project/${name}`, state: props.project  }}
       >
         <p className="project-name-link-text">{name}</p>
       </Link>
