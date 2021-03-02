@@ -1,58 +1,58 @@
-import { gql } from "@apollo/client";
+// import { gql } from "@apollo/client";
 import * as React from "react";
 import "./project-view.scss";
-import { RouteComponentProps, Link, useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import ProjectHeader from "../../components/projectHeader/projectHeader";
 import TranslationsTable from "../../components/table/TranslationsTable";
-import { FormEvent } from "react";
-import { useQuery, useMutation } from "@apollo/client";
+// import { FormEvent } from "react";
+// import { useQuery, useMutation } from "@apollo/client";
 // import { PROJECT_VIEW_QUERY } from '../../queries';
 
-interface QueryProps {
-  id: string;
-}
+// interface QueryProps {
+//   id: string;
+// }
 
-interface ProjectViewProps {
-  id: string;
-}
+// interface ProjectViewProps {
+//   id: string;
+// }
 
-const PROJECT_VIEW_QUERY = gql`
-  query ProjectView($id: ID!) {
-    project(nodeId: $id) {
-      nodeId
-      id
-      name
-      languages: translationLanguagesByProjectId(orderBy: ID_ASC) {
-        nodes {
-          nodeId
-          name
-          id
-        }
-      }
-      keys: translationKeysByProjectId {
-        nodes {
-          name
-          id
-          nodeId
-          translation: translationsByTranslationKeyId(
-            orderBy: TRANSLATION_LANGUAGE_ID_ASC
-          ) {
-            nodes {
-              name
-              id
-              nodeId
-              language: translationLanguageByTranslationLanguageId {
-                name
-                id
-                nodeId
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
+// const PROJECT_VIEW_QUERY = gql`
+//   query ProjectView($id: ID!) {
+//     project(nodeId: $id) {
+//       nodeId
+//       id
+//       name
+//       languages: translationLanguagesByProjectId(orderBy: ID_ASC) {
+//         nodes {
+//           nodeId
+//           name
+//           id
+//         }
+//       }
+//       keys: translationKeysByProjectId {
+//         nodes {
+//           name
+//           id
+//           nodeId
+//           translation: translationsByTranslationKeyId(
+//             orderBy: TRANSLATION_LANGUAGE_ID_ASC
+//           ) {
+//             nodes {
+//               name
+//               id
+//               nodeId
+//               language: translationLanguageByTranslationLanguageId {
+//                 name
+//                 id
+//                 nodeId
+//               }
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// `;
 
 /*const ADD_KEY = gql`
 	mutation AddKey($name: String!, $projectId: Int!) {
@@ -76,31 +76,33 @@ const ADD_LANGUAGE = gql`
 	}
 `;*/
 export default function ProjectView(props: any) {
-    const history = useHistory();
-     const { id, name } = props.location.state;
+    // const history = useHistory();
+    //  const { id, name } = props.location.state;
      //makeMockData
+    const project = {
+      name: "Smart-ID",
+      languages: [{language: "English", nodeId: 1}, {language: "Russian", nodeId: 2}, {language: "Estonian", nodeId: 3},{language: "Estonian", nodeId: 7}],
+      keys: [{key: "homeview.title", nodeId: 5}, {key: "homeview.description", nodeId: 4}],
+      nodeId: 10
+    
+    }
 
      // const { loading, error, data: projectViewState } = useQuery(PROJECT_VIEW_QUERY);
 
      // console.log(projectViewState);
      // const [addKey] = useMutation(ADD_KEY);
+     
      // const [addLanguage] = useMutation(ADD_LANGUAGE);
 
-  const handleAddKey = () => {
-    // add key to table
-  }
-
-  const handleAddLanguage = () => {
-    // add key to table
-  }
+  
 
   return (
     <div className="view projects-view">
-       {props && props.project ? (
-				<div key={props.project.nodeId}>
-          <ProjectHeader/>
+       {project ? (
+				<div key={project.nodeId}>
+          <ProjectHeader project={project}/>
           <div className="table-container">
-            <TranslationsTable languages={props.project.languages.nodes} keys={props.project.keys.nodes} />
+            <TranslationsTable languages={project.languages} keys={project.keys} />
         </div>  
 				</div>
 			) : (

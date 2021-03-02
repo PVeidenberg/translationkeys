@@ -4,10 +4,10 @@ import * as React from "react";
  import TranslationLanguage from "../translationLanguage/TranslationLanguage";
  import "./translation-table.scss";
 
-interface TableProps {
-	languages: Array<string | null>;
-	keys: Array<string| null>;
-}
+// interface TableProps {
+// 	languages: Array<string | null>;
+// 	keys: Array<string| null>;
+// }
 
 export default function TranslationsTable(props: any) {
    const { languages, keys } = props;
@@ -25,20 +25,20 @@ export default function TranslationsTable(props: any) {
             (lang: any) =>
               lang && (
                 <th key={lang.nodeId}>
-                  <TranslationLanguage translationLanguage={lang} />
+                  <TranslationLanguage translationLanguage={lang.language} />
                 </th>
               )
           )}
         </tr>
       </thead>
-      <tbody>{keys.map((key: any) => renderRow(key, languages))}</tbody>
+      <tbody>{keys.map((key: any) => renderRow(key.key, languages))}</tbody>
     </div>
   );
 };
 
 const renderRow = (
-  key: string | null,
-  languages: Array<string | null>
+  key: any | null,
+  languages: Array<any | null>
 ) => {
   if (!key) {
     return null;
@@ -49,12 +49,12 @@ const renderRow = (
       <td>
         <TranslationKey translationKey={key} />
       </td>
-      {languages.map((language, index) => (
+      {languages.map((lang, index) => (
         <td key={index}>
           <div className="translation-container">
             <Translation
               translations={key}
-              language={language}
+              language={lang.language}
               keyId={key}
             />
           </div>

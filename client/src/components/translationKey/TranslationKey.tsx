@@ -39,12 +39,11 @@ interface TranslationKeyProps {
 export default function TranslationKey(props: TranslationKeyProps) {
   const [isActive, setIsActive] = useState(false);
   const [currentValue, setCurrentValue] = useState(props.translationKey);
-  const { translationKey: key } = props;
+  const { translationKey } = props;
 
-  if (!key) {
+  if (!translationKey) {
     return null;
   }
-  
   // useEffect(() => ref.focus(), [isActive]);
 
 //   const [deleteKey] = useMutation(DELETE_KEY);
@@ -83,10 +82,10 @@ const handleUpdateKey = (
 
   return (
     <div className="translation-key-container">
-      <div className="delete-icon" onClick={(e: any) => handleDeleteKey(null, key, e)}>
+      <div className="delete-icon" onClick={(e: any) => handleDeleteKey(null, translationKey, e)}>
         &times;
       </div>
-      <div>
+     
         <div className="styled-translation-key" 
           contentEditable={isActive}
           suppressContentEditableWarning={true}
@@ -94,6 +93,7 @@ const handleUpdateKey = (
             setIsActive(true);
           }}
           >
+          {translationKey}
         </div>
         
         { /*isNotSaved && (
@@ -103,7 +103,7 @@ const handleUpdateKey = (
             <button type="submit">&#x2713;</button>
         </form> 
         )}*/}
-      </div>
+     
     </div>
   );
 };

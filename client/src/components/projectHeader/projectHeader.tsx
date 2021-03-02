@@ -5,30 +5,47 @@ import { useHistory, useLocation, Redirect, Link } from "react-router-dom";
 import Paths from "../../Paths";
 
 export default function Header(props: any) {
-  const history = useHistory();
-  const location = useLocation();
+    const { name, nodeId } = props.project;
+    const history = useHistory();
+    const location = useLocation();
 
-  return (
-    <div className="project-header-container">
-        <span>Project: </span>
-        <strong>{props.project.name}</strong>
-        <a href={`${process.env.REACT_APP_SERVER_URL}/project/${props.project.id}`} target="_blank">
-                Get JSON
-            </a>
-        <Link className="project-settings" to={`/project/settings`}>
-            <p className="project-setting-link-text">Settings</p>
-        </Link>
-        <div className="controls">
-            {/* <form onSubmit={handleAddKey.bind(null, addKey, data.project && data.project.id)}>
-                <input ref={inputKey} />
-                <button type="submit">Add Key</button>
-            </form>
+    const handleAddKey = () => {
+        // add key to table
+      }
+    
+    const handleAddLanguage = () => {
+    // add key to table
+    }
 
-            <form onSubmit={handleAddLanguage.bind(null, addLanguage, data.project && data.project.id)}>
-                <input ref={inputLanguage} />
-                <button type="submit">Add Language</button>
-            </form> */}
+    const handleGETJSON = () => {
+        // add GET JSON data
+    }
+
+    const handleToSettingsView = () => {
+        history.push({pathname: `/project/${name}/settings`});
+    }
+
+    return (
+        <div className="project-header-container">
+            <div>
+                <span>Project: </span>
+                <strong>{name}</strong>
+            </div>
+            <div>
+                <div className="controls">
+                {/* <a className="projects-input-button" href={`${process.env.REACT_APP_SERVER_URL}/project/${nodeId}`} target="_blank">
+                    Get JSON
+                </a> */}
+                {/* <Link className="settings-button" to={`/project/settings`}>
+                    <p className="settings-button">Settings</p>
+                </Link> */}
+                    {/* <input ref={inputKey} /> */}
+                <button onClick={() => handleAddKey()} >Add Key</button>
+                <button onClick={() => handleAddLanguage()}>Add Language</button>
+                <button onClick={() => handleGETJSON()}>GET JSON</button>
+                <button onClick={() => handleToSettingsView()}>SETTINGS</button>
+                </div>
+            </div>
         </div>
-    </div>
-  );
+    );
 }

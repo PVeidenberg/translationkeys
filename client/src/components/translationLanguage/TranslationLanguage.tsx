@@ -36,17 +36,18 @@ interface TranslationLanguageProps {
 // `;
 
 export default function TranslationLanguage(props: TranslationLanguageProps) {
-  const { translationLanguage: language } = props;
+  // const { translationLanguage: language } = props;
+  const { translationLanguage } = props;
+  
+    const initialValue = translationLanguage;
+    const [isActive, setIsActive] = useState(false);
+    const [currentValue, setCurrentValue] = useState(initialValue);
+    const isNotSaved = initialValue !== currentValue;
 
-  if (!language) {
+  if (!translationLanguage) {
     return null;
   }
 
-  const initialValue = language;
-
-  const [isActive, setIsActive] = useState(false);
-  const [currentValue, setCurrentValue] = useState(initialValue);
-  const isNotSaved = initialValue !== currentValue;
   let ref: any = {};
 
 //   useEffect(() => ref.focus(), [isActive]);
@@ -67,12 +68,12 @@ export default function TranslationLanguage(props: TranslationLanguageProps) {
           }}
           onKeyUp={(e:any) => setCurrentValue(ref.innerText)}
         >
-          {language}
+          {translationLanguage}
         </div>
         {isNotSaved && (
           <form
             onSubmit={(e) =>
-              handleUpdateLanguage(null, language, ref, e)
+              handleUpdateLanguage(null, translationLanguage, ref, e)
             }
           >
             <button type="submit">&#x2713;</button>
@@ -80,7 +81,7 @@ export default function TranslationLanguage(props: TranslationLanguageProps) {
         )}
       </div>
 
-      <div className="delete-icon" onClick={(e:any) => handleDeleteLanguage(null, language, e)}>
+      <div className="delete-icon" onClick={(e:any) => handleDeleteLanguage(null, translationLanguage, e)}>
         &times;
       </div>
     </div>
@@ -89,7 +90,7 @@ export default function TranslationLanguage(props: TranslationLanguageProps) {
 
 const handleUpdateLanguage = (
   updateLanguage: any,
-  languageId: string | null,
+  languageId: any | null,
   ref: any,
   e: any
 ) => {
@@ -106,7 +107,7 @@ const handleUpdateLanguage = (
 
 const handleDeleteLanguage = (
   deleteLanguage: any,
-  languageId: string | null,
+  languageId: any | null,
   e: any
 ) => {
   e.preventDefault();

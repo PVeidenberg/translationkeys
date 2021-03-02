@@ -41,18 +41,18 @@ interface TranslationProps {
 export default function Translation(props: any) {
 	const { translations, language, keyId } = props;
 
-	if (!language) {
-		return null;
-	}
-
-	const existingTranslation = translations.find((trns:any) =>
-		!trns || !trns.language ? false : trns.language.id === language.id,
-	);
-	const initialValue = existingTranslation ? existingTranslation.name : '';
+	const initialValue = '';
 
 	const [isActive, setIsActive] = useState(false);
 	const [currentValue, setCurrentValue] = useState(initialValue);
 	const isNotSaved = initialValue !== currentValue;
+
+	if (!language) {
+		return null;
+	}
+
+
+	const existingTranslation = "";
 
 	let ref: any = {};
 
@@ -62,7 +62,7 @@ export default function Translation(props: any) {
 // 	const [updateTranslation] = useMutation(UPDATE_TRANSLATION);
 // 	const [addTranslation] = useMutation(ADD_TRANSLATION);
 
-	console.log({ initialValue, replaced: initialValue.replace(/[\n\r]+/g, '<br>') });
+	// console.log({ initialValue, replaced: initialValue.replace(/[\n\r]+/g, '<br>') });
 
 	return (
 		<>
@@ -77,21 +77,7 @@ export default function Translation(props: any) {
 				}}
 				onKeyUp={(e:any) => setCurrentValue(ref.innerText)}
 			>
-				{(existingTranslation && existingTranslation.name) || ''}
             </div>
-			{isNotSaved && (
-				<>
-					{existingTranslation ? (
-						<form onSubmit={e => handleUpdateTranslation(null, existingTranslation.nodeId, ref, e)}>
-							<button className="styled-button" type="submit">&#x2713;</button>
-						</form>
-					) : (
-						<form onSubmit={e => handlAddTranslation(null, language.id, keyId, ref, e)}>
-							<button type="submit">&#x2713;</button>
-						</form>
-					)}
-				</>
-			)}
 		</>
 	);
 };

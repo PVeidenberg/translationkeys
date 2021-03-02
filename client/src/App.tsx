@@ -64,14 +64,14 @@ export const App: React.FC = () => {
           <ProtectedRoute
             allowed={isLoggedIn}
             redirectNotAllowed={Paths.login}
-            path={Paths.project}
-            component={ProjectView}
+            path={Paths.settings}
+            component={SettingsView}
           />
           <ProtectedRoute
             allowed={isLoggedIn}
             redirectNotAllowed={Paths.login}
-            path={Paths.settings}
-            component={SettingsView}
+            path={Paths.project}
+            component={ProjectView}
           />
           <Route>
             <NotFoundView />
