@@ -6,7 +6,7 @@ import { UserEntity } from "../entities/UserEntity";
 export async function createContext(request: Request) {
   // initialize session and make the viewer a real user entity instance if available
   const session = (request.session as unknown) as SessionInfo;
-  const viewer = session.id ? await UserEntity.findOne({ where: { id: session.id } }) : undefined;
+  const viewer = session.userId ? await UserEntity.findOne({ where: { id: session.userId } }) : undefined;
 
   // extract debug request headers (no available when using websocket transport)
   const clientOperationHeader = request.headers["x-operation"];
@@ -24,6 +24,6 @@ export async function createContext(request: Request) {
       ipAddress: typeof clientIpAddress === "string" ? clientIpAddress : undefined,
     },
   };
-
+  console.log("asdas")
   return new Context(session, viewer, metadata);
 }

@@ -33,7 +33,7 @@ export interface ApolloContext {
 
 // default session contents
 export const sessionDefaults: SessionInfo = {
-    id: undefined,
+    userId: undefined,
     requestCount: 0,
 };
 
@@ -44,13 +44,13 @@ export async function setupApp(config: Config): Promise<App> {
     ]);
     // build graphql executable schema
     const schema = makeSchema({
-        types,
+        types, 
         outputs: {
-        schema: join(__dirname, "..", "schema.graphql"),
-        typegen: join(__dirname, "typings.ts")
+            schema: join(__dirname, "..", "schema.graphql"),
+            typegen: join(__dirname, "typings.ts")
         },
         plugins: [fieldAuthorizePlugin()],
-      //  prettierConfig: join(__dirname, ".prettierrc"),
+        prettierConfig: join(__dirname, "..", ".prettierrc"),
         nonNullDefaults: {
         input: true,
         output: true,

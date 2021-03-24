@@ -1,0 +1,47 @@
+# patterns of documents to scan for qraphql queries
+documents:
+  - "./src/index.tsx"
+  - "./src/App.tsx"
+  - "./src/Root.tsx"
+  - "./src/components/**/*.tsx"
+  - "./src/views/**/*.tsx"
+  - "./src/fragments/**/*.graphql"
+  - "./src/components/**/*.graphql"
+  - "./src/views/**/*.graphql"
+
+# list of files to generate
+generates:
+  # main schema file that contains queries, mutations etc
+  ./src/schema.tsx:
+    schema: "../server/schema.graphql"
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+      - add:
+          content: "/* eslint-disable */"
+    config:
+      scalars:
+        Date: string
+        DateTime: string
+        Time: string
+
+  # introspection file containing map of possible types
+  ./src/introspection.ts:
+    schema: "../server/schema.graphql"
+    plugins:
+      - fragment-matcher
+      - add:
+          content: "/* eslint-disable */"
+    config:
+      module: es2015
+      apolloClientVersion: 3
+      useExplicitTyping: true
+
+# format generated using prettier
+hooks:
+  afterAllFileWrite:
+    - prettier --write
+
+# overwrite generated files
+overwrite: true

@@ -14,18 +14,18 @@ import { getKeyedHash } from "../services/getKeyedHash";
 import { TypeormSessionStore } from "../../lib/typeorm-express-session/index";
 
 
-export enum UserRole {
+/*export enum UserRole {
     REGULAR = "REGULAR",
     ADMIN = "ADMIN",
     DEVELOPER = "DEVELOPER",
     TRANSLATOR = "TRANSLATOR"
-}
+}*/
 
 export interface RegisterUserInfo {
     name: string;
     email: string;
     password: string;
-    roles: UserRole[];
+   // roles: UserRole[];
   }
 
 
@@ -43,11 +43,11 @@ export class UserEntity extends BaseEntity {
     @Column({ type: "text"})
     password!: string;
 
-    @Column({ type: "text", unique: true, nullable: true })
+   /* @Column({ type: "text", unique: true, nullable: true })
     validateEmailToken!: string | null;
   
     @Column({ type: "date", nullable: true })
-    validateEmailExpiryDate!: Date | null;
+    validateEmailExpiryDate!: Date | null;*/
 
     @Column({ type: "text", nullable: true })
     passwordSalt!: string | null;
@@ -73,6 +73,7 @@ export class UserEntity extends BaseEntity {
         const user = await UserEntity.create({
             email: info.email,
             name: info.name,
+            password: info.password,
             passwordSalt,
             passwordHash,
             // ...UserEntity.generateValidateEmailToken(),

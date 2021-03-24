@@ -1,11 +1,11 @@
 import { extendType } from "@nexus/schema";
-import { UserEntity } from "../../entities/UserEntity";
+// import { UserEntity } from "../../entities/UserEntity";
 
 export default extendType({
   type: "Query",
   definition(t) {
     t.field("viewer", {
-      type: "String",
+      type: "Viewer",
       description: "Logged in user",
       nullable: true,
       resolve: (_parent, _args, context) => {
@@ -15,7 +15,7 @@ export default extendType({
         }
 
         // prime logged in user data-loader cache
-        context.loader(UserEntity).prime(context.viewer.id, context.viewer);
+        // context.loader(UserEntity).prime(context.viewer.id, context.viewer);
 
         // return logged in user
         return context.viewer;

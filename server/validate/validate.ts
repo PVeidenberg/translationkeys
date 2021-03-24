@@ -1,12 +1,9 @@
 import Ajv from "ajv";
-import ajvErrors from "ajv-errors";
 import { JSONSchema4 } from "json-schema";
-import { validateExistingEmail } from "../../src/validators/validateExistingEmail";
-import { validateExistingTrack } from "../../src/validators/validateExistingTrack";
-import { validateExistingUser } from "../../src/validators/validateExistingUser";
-import { validateStrongPassword } from "../../src/validators/validateStrongPassword";
-import { validateUniqueEmail } from "../../src/validators/validateUniqueEmail";
-import { JSONObject } from "../json";
+import { validateExistingEmail } from "../src/validators/validateExistingEmail";
+import { validateExistingUser } from "../src/validators/validateExistingUser";
+import { validateUniqueEmail } from "../src/validators/validateUniqueEmail";
+import { JSONObject } from "../src/json";
 
 import { CustomValidator } from "./customValidator";
 import { formatValidationError } from "./formatValidationError";
@@ -15,11 +12,9 @@ import { ValidationError } from "./ValidationError";
 
 // list of default validators always available
 const defaultValidators: CustomValidator[] = [
-  validateStrongPassword(),
   validateUniqueEmail(),
   validateExistingUser(),
   validateExistingEmail(),
-  validateExistingTrack(),
 ];
 
 export async function validate(data: JSONObject, schema: JSONSchema4, extraValidators?: CustomValidator[]) {
@@ -31,9 +26,6 @@ export async function validate(data: JSONObject, schema: JSONSchema4, extraValid
     async: true,
     formats: getFormats(validators),
   });
-
-  // support custom error messages
-  ajvErrors(validator);
 
   // compile schema
   const validate = validator.compile(schema);

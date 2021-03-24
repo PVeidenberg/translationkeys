@@ -1,5 +1,5 @@
 import { ErrorObject } from "ajv";
-import { JSONObject } from "../json";
+import { JSONObject } from "../src/json";
 
 export function getFieldName<T extends JSONObject>(error: ErrorObject, data: T): keyof T | undefined {
   const fieldNames = Object.keys(data);

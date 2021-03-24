@@ -1,25 +1,24 @@
-// import { ErrorObject } from "ajv";
-// import i18n from "es2015-i18n-tag";
-// import { JSONObject } from "../json";
+import { ErrorObject } from "ajv";
+import { JSONObject } from "../src/json";
 
-// export function formatSchemaMessage(error: ErrorObject) {
-//   const params = error.params as JSONObject;
+export function formatSchemaMessage(error: ErrorObject) {
+  const params = error.params as JSONObject;
 
-//   switch (error.keyword) {
-//     case "minLength": {
-//       const limit = params.limit as number;
+  switch (error.keyword) {
+    case "minLength": {
+      const limit = params.limit as number;
 
-//       if (limit > 1) {
-//         return i18n`Expected at least ${limit} characters`;
-//       }
+      if (limit > 1) {
+        return "Expected at least ${limit} characters";
+      }
 
-//       return i18n`This field is required`;
-//     }
+      return "This field is required";
+    }
 
-//     case "maxLength":
-//       return i18n`Expected no more than ${params.limit} characters`;
+    case "maxLength":
+      return "Expected no more than ${params.limit} characters";
 
-//     default:
-//       return i18n`Please use valid format`;
-//   }
-// }
+    default:
+      return "Please use valid format";
+  }
+}

@@ -1,10 +1,12 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
 import introspection from "../introspection";
-
 export function setupApolloClient() {
 
   // setup apollo graphql client
   const client = new ApolloClient({
+    link: createHttpLink({
+      uri: "/api/graphql",
+    }),
     cache: new InMemoryCache({
       possibleTypes: introspection.possibleTypes,
     }),

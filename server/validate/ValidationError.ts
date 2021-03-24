@@ -1,5 +1,5 @@
 import { UserInputError } from "apollo-server-core";
-import { JSONObject } from "../json";
+import { JSONObject } from "../src/json";
 import { FieldValidationErrorMap } from "./formatValidationError";
 
 export class ValidationError<T extends JSONObject> extends UserInputError {

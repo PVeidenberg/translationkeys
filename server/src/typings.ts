@@ -3,71 +3,143 @@
  * Do not make changes to this file directly
  */
 
-
-import { FieldAuthorizeResolver } from "@nexus/schema/dist/plugins/fieldAuthorizePlugin"
-
-
-
+import { FieldAuthorizeResolver } from "@nexus/schema/dist/plugins/fieldAuthorizePlugin";
 
 declare global {
   interface NexusGen extends NexusGenTypes {}
 }
 
-export interface NexusGenInputs {
-}
+export interface NexusGenInputs {}
 
-export interface NexusGenEnums {
-}
+export interface NexusGenEnums {}
 
 export interface NexusGenScalars {
-  String: string
-  Int: number
-  Float: number
-  Boolean: boolean
-  ID: string
+  String: string;
+  Int: number;
+  Float: number;
+  Boolean: boolean;
+  ID: string;
 }
 
 export interface NexusGenRootTypes {
+  Mutation: {};
   Query: {};
+  User: {
+    // root type
+    email: string; // String!
+    id: string; // ID!
+    name: string; // String!
+  };
+  Viewer: {
+    // root type
+    email: string; // String!
+    id: string; // ID!
+    name: string; // String!
+  };
+  UserInterface: NexusGenRootTypes["User"] | NexusGenRootTypes["Viewer"];
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
-  String: NexusGenScalars['String'];
-  Int: NexusGenScalars['Int'];
-  Float: NexusGenScalars['Float'];
-  Boolean: NexusGenScalars['Boolean'];
-  ID: NexusGenScalars['ID'];
+  String: NexusGenScalars["String"];
+  Int: NexusGenScalars["Int"];
+  Float: NexusGenScalars["Float"];
+  Boolean: NexusGenScalars["Boolean"];
+  ID: NexusGenScalars["ID"];
 }
 
 export interface NexusGenFieldTypes {
-  Query: { // field return type
+  Mutation: {
+    // field return type
+    login: NexusGenRootTypes["Viewer"]; // Viewer!
+    logout: boolean; // Boolean!
+    register: NexusGenRootTypes["Viewer"]; // Viewer!
+  };
+  Query: {
+    // field return type
     version: string; // String!
-    viewer: string | null; // String
-  }
+    viewer: NexusGenRootTypes["Viewer"] | null; // Viewer
+  };
+  User: {
+    // field return type
+    email: string; // String!
+    id: string; // ID!
+    name: string; // String!
+  };
+  Viewer: {
+    // field return type
+    email: string; // String!
+    id: string; // ID!
+    name: string; // String!
+  };
+  UserInterface: {
+    // field return type
+    email: string; // String!
+    id: string; // ID!
+    name: string; // String!
+  };
 }
 
 export interface NexusGenFieldTypeNames {
-  Query: { // field return type name
-    version: 'String'
-    viewer: 'String'
-  }
+  Mutation: {
+    // field return type name
+    login: "Viewer";
+    logout: "Boolean";
+    register: "Viewer";
+  };
+  Query: {
+    // field return type name
+    version: "String";
+    viewer: "Viewer";
+  };
+  User: {
+    // field return type name
+    email: "String";
+    id: "ID";
+    name: "String";
+  };
+  Viewer: {
+    // field return type name
+    email: "String";
+    id: "ID";
+    name: "String";
+  };
+  UserInterface: {
+    // field return type name
+    email: "String";
+    id: "ID";
+    name: "String";
+  };
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    login: {
+      // args
+      email: string; // String!
+      password: string; // String!
+    };
+    register: {
+      // args
+      email: string; // String!
+      name: string; // String!
+      password: string; // String!
+    };
+  };
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
+  UserInterface: "User" | "Viewer";
 }
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Query";
+export type NexusGenObjectNames = "Mutation" | "Query" | "User" | "Viewer";
 
 export type NexusGenInputNames = never;
 
 export type NexusGenEnumNames = never;
 
-export type NexusGenInterfaceNames = never;
+export type NexusGenInterfaceNames = "UserInterface";
 
 export type NexusGenScalarNames = "Boolean" | "Float" | "ID" | "Int" | "String";
 
@@ -88,17 +160,20 @@ export interface NexusGenTypes {
   interfaceNames: NexusGenInterfaceNames;
   scalarNames: NexusGenScalarNames;
   unionNames: NexusGenUnionNames;
-  allInputTypes: NexusGenTypes['inputNames'] | NexusGenTypes['enumNames'] | NexusGenTypes['scalarNames'];
-  allOutputTypes: NexusGenTypes['objectNames'] | NexusGenTypes['enumNames'] | NexusGenTypes['unionNames'] | NexusGenTypes['interfaceNames'] | NexusGenTypes['scalarNames'];
-  allNamedTypes: NexusGenTypes['allInputTypes'] | NexusGenTypes['allOutputTypes']
-  abstractTypes: NexusGenTypes['interfaceNames'] | NexusGenTypes['unionNames'];
+  allInputTypes: NexusGenTypes["inputNames"] | NexusGenTypes["enumNames"] | NexusGenTypes["scalarNames"];
+  allOutputTypes:
+    | NexusGenTypes["objectNames"]
+    | NexusGenTypes["enumNames"]
+    | NexusGenTypes["unionNames"]
+    | NexusGenTypes["interfaceNames"]
+    | NexusGenTypes["scalarNames"];
+  allNamedTypes: NexusGenTypes["allInputTypes"] | NexusGenTypes["allOutputTypes"];
+  abstractTypes: NexusGenTypes["interfaceNames"] | NexusGenTypes["unionNames"];
   abstractResolveReturn: NexusGenAbstractResolveReturnTypes;
 }
 
-
 declare global {
-  interface NexusGenPluginTypeConfig<TypeName extends string> {
-  }
+  interface NexusGenPluginTypeConfig<TypeName extends string> {}
   interface NexusGenPluginFieldConfig<TypeName extends string, FieldName extends string> {
     /**
      * Authorization for an individual field. Returning "true"
@@ -108,8 +183,7 @@ declare global {
      * Returning or throwing an error will also prevent the
      * resolver from executing.
      */
-    authorize?: FieldAuthorizeResolver<TypeName, FieldName>
+    authorize?: FieldAuthorizeResolver<TypeName, FieldName>;
   }
-  interface NexusGenPluginSchemaConfig {
-  }
+  interface NexusGenPluginSchemaConfig {}
 }

@@ -1,5 +1,5 @@
 import { ValidationError } from "ajv";
-import { JSONObject } from "../json";
+import { JSONObject } from "../src/json";
 
 import { CustomValidator } from "./customValidator";
 import { formatErrorMessage } from "./formatErrorMessage";

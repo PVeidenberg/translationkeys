@@ -13,7 +13,7 @@ import {
 @Entity()
 export class Session extends BaseEntity {
   @PrimaryColumn("text")
-  sessionId!: string;
+  id!: string;
 
   @Column({ type: "text", nullable: true})
   @Index()
@@ -23,7 +23,7 @@ export class Session extends BaseEntity {
   data!: string;
 
   @Index()
-  @Column("date")
+  @Column("timestamp")
   expiryDate!: Date;
 
   @CreateDateColumn()
@@ -63,6 +63,7 @@ export class TypeormSessionStore extends Store {
 
   static async destroyUserSession(userId: string) {
     await Session.delete({ userId });
+    console.log("deleted session");
   }
 
   get = async (sid: string, callback: ResultCallback) => {
@@ -95,7 +96,7 @@ export class TypeormSessionStore extends Store {
 
       // add or update session entry
       await Session.create({
-        sessionId: sid,
+        id: sid,
         data,
         userId,
         expiryDate,
@@ -154,7 +155,7 @@ export class TypeormSessionStore extends Store {
       const sessions: { [sid: string]: any } = {};
 
       entries.forEach((entry) => {
-        sessions[entry.sessionId] = JSON.parse(entry.data);
+        sessions[entry.id] = JSON.parse(entry.data);
       });
 
       callback(undefined, sessions);
@@ -168,7 +169,7 @@ export class TypeormSessionStore extends Store {
       .getRepository(Session)
       .createQueryBuilder("session")
       .delete()
-      .where("session.expiryDate <= NOW()")
+      .where("expiryDate <= NOW()")
       .execute();
   }
 
