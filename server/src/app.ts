@@ -13,7 +13,6 @@ import { TypeormSessionStore } from "../lib/typeorm-express-session/index";
 import { setupGraphqlServer } from "./services/setupGraphqlServer";
 
 import { closeDatabaseConnection } from "./services/closeDatabaseConnection";
-import { initializeSessionDefaults } from "./services/initializeSessionDefaults";
 
 // configured app info
 export interface App {
@@ -59,9 +58,9 @@ export async function setupApp(config: Config): Promise<App> {
     
     // setup session middleware
     const sessionMiddleware = session({
-        rolling: true,
-        saveUninitialized: true,
-        resave: true,
+        rolling: false,
+        saveUninitialized: false,
+        resave: false,
         secret: config.session.secret,
         cookie: {
             httpOnly: true,
@@ -107,9 +106,6 @@ export async function setupApp(config: Config): Promise<App> {
         if (!request.session) {
         throw new Error("Session support is not properly configured");
         }
-
-        // initialize session default values
-        initializeSessionDefaults(request.session, sessionDefaults);
 
         next();
     });

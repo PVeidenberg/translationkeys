@@ -3,11 +3,13 @@ import {
     Column,
     Entity,
     OneToMany,
-    PrimaryGeneratedColumn,
+    ManyToMany,
+    PrimaryGeneratedColumn
 } from "typeorm";
   import { LanguageEntity } from "./LanguageEntity";
   import { TagEntity } from "./TagEntity";
   import { TranslationkeyEntity } from "./TranslationkeyEntity";
+import { UserEntity } from "./UserEntity";
 
 @Entity("project")
 export class ProjectEntity extends BaseEntity {
@@ -25,4 +27,7 @@ export class ProjectEntity extends BaseEntity {
 
     @OneToMany(() => TranslationkeyEntity, translationkey => translationkey.project)
     translationkeys: TranslationkeyEntity[];
+
+    @ManyToMany(() => UserEntity, user => user.projects)
+    users: UserEntity[];
 }

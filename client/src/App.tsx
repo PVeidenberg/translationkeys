@@ -4,6 +4,7 @@ import { Route, Switch, Redirect } from "react-router";
 import Paths from "./Paths";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
+import { useAppContext } from "../src/projectState/AppContext";
 import { useViewerQuery } from "./schema";
 import ProjectView from "./views/ProjectView/ProjectView";
 import ProjectsView from "./views/ProjectsView/ProjectsView";
@@ -23,6 +24,8 @@ gql`
 `;
 
 export const App: React.FC = () => {
+  const { setIsAuthenticated } = useAppContext();
+
   // attempt to get logged in user (viewer) info
   const { data, loading, error } = useViewerQuery();
   console.log("data", data);
@@ -39,9 +42,8 @@ export const App: React.FC = () => {
 
   // get viewer info and check whether the user is logged in
   const viewer = data && data.viewer;
-  console.log("viewer", viewer);
-
   const isLoggedIn = viewer !== null;
+  setIsAuthenticated(isLoggedIn);
   console.log("isLoggedIn", isLoggedIn);
 
   // decide path to redirect to from root path based on whether the user is logged in

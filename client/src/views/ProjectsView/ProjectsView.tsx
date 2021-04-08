@@ -1,74 +1,94 @@
 import React, { useState } from "react";
 import "./projects-view.scss";
 import Header from "../../components/header/Header";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { useHistory } from "react-router-dom";
+import { useProjectsQuery, useAddProjectMutation } from "../../schema";
+import { Field } from "../../components/Field/Field";
+// import { useProjectsQuery, useAddProjectMutation } from "../../schema";
 import ProjectNameContainer from "../../components/projectNameContainer/ProjectNameContainer";
-import { useLazyQuery, useQuery, useMutation } from "@apollo/client";
-import { Redirect } from "react-router-dom";
+import { gql } from "@apollo/client";
 import Paths from "../../Paths";
 
 interface ProjectsFormValues {
   projectName: string;
 }
 
+// get all projects query
+gql`
+  query projects {
+    projects {
+      id
+      projectName
+    }
+  }
+`;
+
+// add-projects mutation (generates useLoginMutation hook)
+gql`
+  mutation addProject($projectName: String!) {
+    addProject(projectName: $projectName) {
+      id
+    }
+  }
+`;
+
 export default function ProjectsView(props: any) {
   const history = useHistory();
-  const mockData = [{id: 1, name: "Smart-ID"}, {id: 2, name: "DagCoin"}]
-
   const { register, handleSubmit, errors, watch } = useForm<ProjectsFormValues>();
-  const onSubmit = (data: any) => {
-    history.push(Paths.projects);
-    console.log(data);
+
+  // attempt to get projects list
+  const { data, loading, error } = useProjectsQuery();
+
+  // // handle error
+  if (error) {
+    // return <LandingView />;
   }
 
-  /*async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
-    e.preventDefault();
-    console.log("handleSubmitProjectsView");
-    setProjectName("");
-  }*/
+  // handle loading
+  if (loading || !data) {
+    //  return <SettingsView />;
+  }
+
+  // setup login mutation
+  const [addProject, addProjectResult] = useAddProjectMutation({
+    refetchQueries: ["projects"],
+    awaitRefetchQueries: true,
+  });
+
+  // addproject on submit
+  const onSubmit: SubmitHandler<ProjectsFormValues> = async ({ projectName }) => {
+    console.log(projectName);
+    const response = await addProject({
+      variables: { projectName },
+    });
+  };
 
   return (
     <div className="view projects-view">
       <Header />
       <div className="projects-title">Projects</div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="projects-input-container"
-      >
-        <input
-          placeholder="Enter project name..."
-          className="projects-input-field"
+      <form className="projects-input-container" onSubmit={handleSubmit(onSubmit)}>
+        <Field
           type="text"
           id="name"
           name="name"
+          label=""
           defaultValue=""
-          ref={register}
+          error={errors.projectName}
+          register={register}
         />
-
-        <button className="projects-input-button" type="submit">
-          Add Project
-        </button>
+        <input className="projects-input-button" type="submit" value="Add Project" />
       </form>
-      {
-        mockData.map((project:any, index:number) => {
+      {data &&
+        data.projects.map((project: any, index: number) => {
+          console.log(project.id);
+          console.log(index);
           if (!project) {
             return;
           }
           return <ProjectNameContainer key={project.id} project={project} index={index} />;
-        })
-      }
-      {/* {getAllProjectsState && getAllProjectsState.getAllProjects ? (
-				getAllProjectsState.getAllProjects.map((project: any) => {
-					if (!project) {
-						return;
-					}
-					console.log(project.id);
-					return <ProjectNameContainer key={project.id} project={project} />;
-				})
-			) : (
-				<p> Loading...</p>
-			)}{' '} */}
+        })}
     </div>
   );
 }

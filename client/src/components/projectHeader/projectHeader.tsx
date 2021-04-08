@@ -1,51 +1,64 @@
 import * as React from "react";
 import "./project-header.scss";
-import { useMutation } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { useLogoutMutation } from "../../schema";
 import { useHistory, useLocation, Redirect, Link } from "react-router-dom";
 import Paths from "../../Paths";
 
+// logout mutation (generates useLogoutMutation hook)
+gql`
+  mutation Logout {
+    logout
+  }
+`;
+
 export default function Header(props: any) {
-    const { name, nodeId } = props.project;
-    const history = useHistory();
-    const location = useLocation();
+  const { name, nodeId } = props.project;
+  const [logout, logoutResult] = useLogoutMutation({
+    refetchQueries: ["Viewer"],
+    awaitRefetchQueries: true,
+  });
 
-    const handleAddKey = () => {
-        // add key to table
-      }
-    
-    const handleAddLanguage = () => {
+  const history = useHistory();
+  const location = useLocation();
+
+  const handleAddKey = () => {
     // add key to table
-    }
+  };
 
-    const handleGETJSON = () => {
-        // add GET JSON data
-    }
+  const handleAddLanguage = () => {
+    // add key to table
+  };
 
-    const handleToSettingsView = () => {
-        history.push({pathname: `/project/${name}/settings`});
-    }
+  const handleGETJSON = () => {
+    // add GET JSON data
+  };
 
-    return (
-        <div className="project-header-container">
-            <div>
-                <span>Project: </span>
-                <strong>{name}</strong>
-            </div>
-            <div>
-                <div className="controls">
-                {/* <a className="projects-input-button" href={`${process.env.REACT_APP_SERVER_URL}/project/${nodeId}`} target="_blank">
+  const handleToSettingsView = () => {
+    history.push({ pathname: `/project/${name}/settings` });
+  };
+
+  return (
+    <div className="project-header-container">
+      <div>
+        <span>Project: </span>
+        <strong>{name}</strong>
+      </div>
+      <div>
+        <div className="controls">
+          {/* <a className="projects-input-button" href={`${process.env.REACT_APP_SERVER_URL}/project/${nodeId}`} target="_blank">
                     Get JSON
                 </a> */}
-                {/* <Link className="settings-button" to={`/project/settings`}>
+          {/* <Link className="settings-button" to={`/project/settings`}>
                     <p className="settings-button">Settings</p>
                 </Link> */}
-                    {/* <input ref={inputKey} /> */}
-                <button onClick={() => handleAddKey()} >Add Key</button>
-                <button onClick={() => handleAddLanguage()}>Add Language</button>
-                <button onClick={() => handleGETJSON()}>GET JSON</button>
-                <button onClick={() => handleToSettingsView()}>SETTINGS</button>
-                </div>
-            </div>
+          {/* <input ref={inputKey} /> */}
+          <button onClick={() => handleAddKey()}>Add Key</button>
+          <button onClick={() => handleAddLanguage()}>Add Language</button>
+          <button onClick={() => handleGETJSON()}>GET JSON</button>
+          <button onClick={() => handleToSettingsView()}>SETTINGS</button>
         </div>
-    );
+      </div>
+    </div>
+  );
 }

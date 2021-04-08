@@ -22,8 +22,33 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenRootTypes {
+  Language: {
+    // root type
+    id: string; // ID!
+    languageName: string; // String!
+  };
   Mutation: {};
+  Project: {
+    // root type
+    id: string; // ID!
+    projectName: string; // String!
+  };
   Query: {};
+  Tag: {
+    // root type
+    id: string; // ID!
+    tagName: string; // String!
+  };
+  Translation: {
+    // root type
+    id: string; // ID!
+    translationValue: string; // String!
+  };
+  Translationkey: {
+    // root type
+    id: string; // ID!
+    translationkeyName: string; // String!
+  };
   User: {
     // root type
     email: string; // String!
@@ -48,16 +73,49 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 }
 
 export interface NexusGenFieldTypes {
+  Language: {
+    // field return type
+    id: string; // ID!
+    languageName: string; // String!
+  };
   Mutation: {
     // field return type
+    addProject: NexusGenRootTypes["Project"]; // Project!
+    addTranslationkey: NexusGenRootTypes["Translationkey"]; // Translationkey!
     login: NexusGenRootTypes["Viewer"]; // Viewer!
     logout: boolean; // Boolean!
     register: NexusGenRootTypes["Viewer"]; // Viewer!
+    removeProject: boolean; // Boolean!
+    updateProject: boolean; // Boolean!
+  };
+  Project: {
+    // field return type
+    id: string; // ID!
+    projectName: string; // String!
   };
   Query: {
     // field return type
+    languages: NexusGenRootTypes["Language"][]; // [Language!]!
+    projects: NexusGenRootTypes["Project"][]; // [Project!]!
+    translationkeys: NexusGenRootTypes["Translationkey"][]; // [Translationkey!]!
+    translations: NexusGenRootTypes["Translation"][]; // [Translation!]!
     version: string; // String!
     viewer: NexusGenRootTypes["Viewer"] | null; // Viewer
+  };
+  Tag: {
+    // field return type
+    id: string; // ID!
+    tagName: string; // String!
+  };
+  Translation: {
+    // field return type
+    id: string; // ID!
+    translationValue: string; // String!
+  };
+  Translationkey: {
+    // field return type
+    id: string; // ID!
+    translationkeyName: string; // String!
   };
   User: {
     // field return type
@@ -80,16 +138,49 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  Language: {
+    // field return type name
+    id: "ID";
+    languageName: "String";
+  };
   Mutation: {
     // field return type name
+    addProject: "Project";
+    addTranslationkey: "Translationkey";
     login: "Viewer";
     logout: "Boolean";
     register: "Viewer";
+    removeProject: "Boolean";
+    updateProject: "Boolean";
+  };
+  Project: {
+    // field return type name
+    id: "ID";
+    projectName: "String";
   };
   Query: {
     // field return type name
+    languages: "Language";
+    projects: "Project";
+    translationkeys: "Translationkey";
+    translations: "Translation";
     version: "String";
     viewer: "Viewer";
+  };
+  Tag: {
+    // field return type name
+    id: "ID";
+    tagName: "String";
+  };
+  Translation: {
+    // field return type name
+    id: "ID";
+    translationValue: "String";
+  };
+  Translationkey: {
+    // field return type name
+    id: "ID";
+    translationkeyName: "String";
   };
   User: {
     // field return type name
@@ -113,6 +204,14 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    addProject: {
+      // args
+      projectName: string; // String!
+    };
+    addTranslationkey: {
+      // args
+      translationkeyName: string; // String!
+    };
     login: {
       // args
       email: string; // String!
@@ -124,6 +223,30 @@ export interface NexusGenArgTypes {
       name: string; // String!
       password: string; // String!
     };
+    removeProject: {
+      // args
+      id: string; // String!
+    };
+    updateProject: {
+      // args
+      id: string; // String!
+      projectName: string; // String!
+    };
+  };
+  Query: {
+    languages: {
+      // args
+      projectId: string; // String!
+    };
+    translationkeys: {
+      // args
+      projectId: string; // String!
+    };
+    translations: {
+      // args
+      languageId: string; // String!
+      translationkeyId: string; // String!
+    };
   };
 }
 
@@ -133,7 +256,16 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Mutation" | "Query" | "User" | "Viewer";
+export type NexusGenObjectNames =
+  | "Language"
+  | "Mutation"
+  | "Project"
+  | "Query"
+  | "Tag"
+  | "Translation"
+  | "Translationkey"
+  | "User"
+  | "Viewer";
 
 export type NexusGenInputNames = never;
 

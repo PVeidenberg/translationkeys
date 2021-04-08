@@ -62,9 +62,9 @@ export class UserEntity extends BaseEntity {
     //   })
     //   roles!: UserRole[];
 
-    @ManyToMany(() => ProjectEntity, { cascade: true, onDelete: "CASCADE" })
+    @ManyToMany(() => ProjectEntity, project => project.users, { eager: true, cascade: true, onDelete: "CASCADE" })
     @JoinTable()
-    project: ProjectEntity[];
+    projects: ProjectEntity[];
 
     static async register(info: RegisterUserInfo): Promise<UserEntity> {
         const passwordSalt = generateRandomString(fieldLength.hash);

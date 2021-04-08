@@ -24,6 +24,5 @@ export async function createContext(request: Request) {
       ipAddress: typeof clientIpAddress === "string" ? clientIpAddress : undefined,
     },
   };
-  console.log("asdas")
   return new Context(session, viewer, metadata);
 }

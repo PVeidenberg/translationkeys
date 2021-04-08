@@ -41,11 +41,6 @@ export default function SignupForm(props: any) {
     awaitRefetchQueries: true,
   });
 
-  /*const onSubmit = (data: any) => {
-    history.push(Paths.projects);
-    console.log(data);
-  };*/
-
   // register user on submit
   const onSubmit: SubmitHandler<SignupFormValues> = async (data) => {
     console.log({ data });
@@ -81,16 +76,6 @@ export default function SignupForm(props: any) {
     errors.repeatPassword !== undefined ||
     repeatPassword === undefined ||
     repeatPassword === "";
-
-  // console.log(hasErrors);
-  // console.log(email);
-  // console.log(name);
-  // console.log(password);
-  // console.log(repeatPassword);
-  // console.log(errors.email);
-  // console.log(errors.name);
-  // console.log(errors.password);
-  // console.log(errors.repeatPassword);
 
   return (
     <div className="signup-form">

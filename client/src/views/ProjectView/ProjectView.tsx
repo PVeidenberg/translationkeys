@@ -76,38 +76,46 @@ const ADD_LANGUAGE = gql`
 	}
 `;*/
 export default function ProjectView(props: any) {
-    // const history = useHistory();
-    //  const { id, name } = props.location.state;
-     //makeMockData
-    const project = {
-      name: "Smart-ID",
-      languages: [{language: "English", nodeId: 1}, {language: "Russian", nodeId: 2}, {language: "Estonian", nodeId: 3},{language: "Estonian", nodeId: 7}],
-      keys: [{key: "homeview.title", nodeId: 5}, {key: "homeview.description", nodeId: 4}],
-      nodeId: 10
-    
-    }
+  // const history = useHistory();
+  //  const { id, name } = props.location.state;
+  //makeMockData
+  const project = {
+    name: "Smart-ID",
+    languages: [
+      { language: "English", nodeId: 1 },
+      { language: "Russian", nodeId: 2 },
+      { language: "Estonian", nodeId: 3 },
+      { language: "German", nodeId: 7 },
+    ],
+    keys: [
+      { key: "homeview.title", nodeId: 5 },
+      { key: "homeview.description", nodeId: 4 },
+      { key: "homeview.confirmButton", nodeId: 11 },
+      { key: "homeview.cancelButton", nodeId: 12 },
+    ],
+    nodeId: 10,
+  };
 
-     // const { loading, error, data: projectViewState } = useQuery(PROJECT_VIEW_QUERY);
+  // const { loading, error, data: projectViewState } = useQuery(PROJECT_VIEW_QUERY);
 
-     // console.log(projectViewState);
-     // const [addKey] = useMutation(ADD_KEY);
-     
-     // const [addLanguage] = useMutation(ADD_LANGUAGE);
+  // console.log(projectViewState);
+  // const [addKey] = useMutation(ADD_KEY);
 
-  
+  // const [addLanguage] = useMutation(ADD_LANGUAGE);
 
   return (
     <div className="view projects-view">
-       {project ? (
-				<div key={project.nodeId}>
-          <ProjectHeader project={project}/>
+      {project ? (
+        <div key={project.nodeId}>
+          <ProjectHeader project={project} />
           <div className="table-container">
             <TranslationsTable languages={project.languages} keys={project.keys} />
-        </div>  
-				</div>
-			) : (
-				<p>Loading...</p>
-			)} *
+          </div>
+        </div>
+      ) : (
+        <p>Loading...</p>
+      )}{" "}
+      *
     </div>
   );
 }

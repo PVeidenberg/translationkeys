@@ -4,16 +4,15 @@ import { FormEvent, useState } from "react";
 import "./project-name-container.scss";
 import { useMutation } from "@apollo/client";
 
-export default function ProjectNameContainer(props: { project: any, index: number }) {
+export default function ProjectNameContainer(props: { project: any; index: number }) {
   const [isDeletingOpened, setIsDeletingOpened] = useState(false);
 
-  const { name, id } = props.project;
+  const { projectName } = props.project;
   const { index } = props;
 
-  const handleDeleteProject = (projectName: string, e:any) => {
+  const handleDeleteProject = (projectName: string, e: any) => {
     e.preventDefault();
-
-  }
+  };
 
   const deletingButtons = (
     <div className="projects-delete-modal">
@@ -25,28 +24,19 @@ export default function ProjectNameContainer(props: { project: any, index: numbe
         >
           Close
         </button>
-        <button onClick={(e) => handleDeleteProject(name, e)}>
-          Delete Project
-        </button>
+        <button onClick={(e) => handleDeleteProject(projectName, e)}>Delete Project</button>
       </div>
     </div>
   );
 
   return (
     <div className="project-name-container" key={index}>
-      <Link
-        className="project-name-link"
-        to={{ pathname: `/project/${name}`, state: props.project  }}
-      >
-        <p className="project-name-link-text">{name}</p>
+      <Link className="project-name-link" to={{ pathname: `/project/${projectName}`, state: props.project }}>
+        <p className="project-name-link-text">{projectName}</p>
       </Link>
 
       <div className="delete-button">
-        {isDeletingOpened ? (
-          deletingButtons
-        ) : (
-          <div onClick={() => setIsDeletingOpened(true)}>&times;</div>
-        )}
+        {isDeletingOpened ? deletingButtons : <div onClick={() => setIsDeletingOpened(true)}>&times;</div>}
       </div>
     </div>
   );

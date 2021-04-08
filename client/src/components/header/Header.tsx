@@ -1,33 +1,33 @@
 import * as React from "react";
 import "./header.scss";
-import { useMutation } from "@apollo/client";
+import { useMutation, gql } from "@apollo/client";
+import { useLogoutMutation } from "../../schema";
 import { useHistory, useLocation, Redirect } from "react-router-dom";
+import { useAppContext } from "../../projectState/AppContext";
 import Paths from "../../Paths";
 
+// logout mutation (generates useLogoutMutation hook)
+gql`
+  mutation Logout {
+    logout
+  }
+`;
+
 export default function Header(props: any) {
+  const { isAuthenticated } = useAppContext();
+  const [logout, logoutResult] = useLogoutMutation({
+    refetchQueries: ["Viewer"],
+    awaitRefetchQueries: true,
+  });
   const history = useHistory();
-  const location = useLocation();
+  // const location = useLocation();
 
-  /*// LOGOUT
-  const [logoutUser, logoutUserState] = useMutation(LOGOUT_USER);
-
-  // logoutUser mutation checks
-  if (logoutUserState.loading && logoutUserState.called) {
-    return <div>LOADING</div>;
-  }
-
-  if (logoutUserState.error) {
-    return <div>ERRRRRRORRR</div>;
-  }
-
-  if (logoutUserState.data && logoutUserState.data.logoutUser.success) {
-    // Logout successful, redirect to landing view
-    return <Redirect to={Paths.landing} />;
-  }
-  // ------------------------------
-*/
   const handleLogout = async () => {
-    history.push(Paths.landing);
+    const response = await logout();
+
+    if (response.data) {
+      history.push(Paths.landing);
+    }
   };
 
   const handleLogin = () => {
@@ -40,18 +40,26 @@ export default function Header(props: any) {
 
   return (
     <div className="header-container">
-      <button className="logout-button" onClick={() => handleLogout()}>
-        LOG OUT
-      </button>
-
-      <>
-        <button className="login-button" onClick={() => handleLogin()}>
-          LOG IN
-        </button>
-        <button className="signup-button" onClick={() => handleSignup()}>
-          SIGN UP
-        </button>
-      </>
+      <div>
+        <span>Welcome: </span>
+        <strong>{"Pärt Veidenberg"}</strong>
+      </div>
+      <div>
+        {isAuthenticated ? (
+          <button className="logout-button" onClick={() => handleLogout()}>
+            LOG OUT
+          </button>
+        ) : (
+          <>
+            <button className="login-button" onClick={() => handleLogin()}>
+              LOG IN
+            </button>
+            <button className="signup-button" onClick={() => handleSignup()}>
+              SIGN UP
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 }
