@@ -6,16 +6,15 @@ export default queryField("translations", {
   list: true,
   args: {
     languageId: stringArg(),
-    translationkeyId: stringArg()
+    translationkeyId: stringArg(),
   },
   description: "Queries all translations",
   resolve: (_parent, args, context) => {
-
-    return TranslationEntity.createQueryBuilder("translation")
-    .innerJoin("translation.language", "languages")
-    .innerJoin("translation.translationkey", "translationkeys")
-    .where("languages.id = :languageId", { languageId: args.languageId })
-    .andWhere("translationkeys.id = :translationkeyId", { translationkeyId: args.translationkeyId })
-    .getMany();
+    return TranslationEntity.find({
+      where: {
+        languageId: args.languageId,
+        translationkeyId: args.translationkeyId,
+      },
+    });
   },
 });

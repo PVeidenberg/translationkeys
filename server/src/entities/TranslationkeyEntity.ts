@@ -1,32 +1,38 @@
 import {
-    BaseEntity,
-    Column,
-    Entity,
-    ManyToOne,
-    ManyToMany,
-    OneToMany,
-    JoinTable,
-    PrimaryGeneratedColumn,
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  ManyToMany,
+  OneToMany,
+  JoinTable,
+  PrimaryGeneratedColumn,
 } from "typeorm";
 import { ProjectEntity } from "./ProjectEntity";
 import { TranslationEntity } from "./TranslationEntity";
 import { TagEntity } from "./TagEntity";
-  
+
 @Entity("translationkey")
 export class TranslationkeyEntity extends BaseEntity {
-    @PrimaryGeneratedColumn("uuid")
-    readonly id!: string;
+  @PrimaryGeneratedColumn("uuid")
+  readonly id!: string;
 
-    @Column({ type: "text" })
-    translationkeyName!: string;
+  @Column({ type: "text" })
+  projectId: string;
 
-    @ManyToOne(() => ProjectEntity, translationkey => translationkey.translationkeys)
-        project: ProjectEntity;
+  @Column({ type: "text" })
+  translationkeyName!: string;
 
-    @ManyToMany(() => TagEntity, { cascade: true, onDelete: "CASCADE" })
-    @JoinTable()
-    tag: TagEntity[];
+  @ManyToOne(() => ProjectEntity, (translationkey) => translationkey.translationkeys, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
+  project: ProjectEntity;
 
-    @OneToMany(() => TranslationEntity, translation => translation.translationkey)
-    translations: TranslationEntity[];
+  @ManyToMany(() => TagEntity, { cascade: true, onDelete: "CASCADE" })
+  @JoinTable()
+  tag: TagEntity[];
+
+  @OneToMany(() => TranslationEntity, (translation) => translation.translationkey)
+  translations: TranslationEntity[];
 }

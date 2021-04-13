@@ -1,121 +1,61 @@
-// import { gql } from "@apollo/client";
 import * as React from "react";
 import "./project-view.scss";
-// import { useHistory } from "react-router-dom";
+import { useProjectTranslationsQuery } from "../../schema";
 import ProjectHeader from "../../components/projectHeader/projectHeader";
 import TranslationsTable from "../../components/table/TranslationsTable";
-// import { FormEvent } from "react";
-// import { useQuery, useMutation } from "@apollo/client";
-// import { PROJECT_VIEW_QUERY } from '../../queries';
+import { gql } from "@apollo/client";
 
-// interface QueryProps {
-//   id: string;
-// }
-
-// interface ProjectViewProps {
-//   id: string;
-// }
-
-// const PROJECT_VIEW_QUERY = gql`
-//   query ProjectView($id: ID!) {
-//     project(nodeId: $id) {
-//       nodeId
-//       id
-//       name
-//       languages: translationLanguagesByProjectId(orderBy: ID_ASC) {
-//         nodes {
-//           nodeId
-//           name
-//           id
-//         }
-//       }
-//       keys: translationKeysByProjectId {
-//         nodes {
-//           name
-//           id
-//           nodeId
-//           translation: translationsByTranslationKeyId(
-//             orderBy: TRANSLATION_LANGUAGE_ID_ASC
-//           ) {
-//             nodes {
-//               name
-//               id
-//               nodeId
-//               language: translationLanguageByTranslationLanguageId {
-//                 name
-//                 id
-//                 nodeId
-//               }
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// `;
-
-/*const ADD_KEY = gql`
-	mutation AddKey($name: String!, $projectId: Int!) {
-		createTranslationKey(input: { translationKey: { name: $name, projectId: $projectId } }) {
-			translationKey {
-				nodeId
-				name
-			}
-		}
-	}
+// get all projectTranslations query
+gql`
+  query ProjectTranslations($projectId: String!) {
+    projectTranslations(projectId: $projectId) {
+      id
+      languageId
+      translationkeyId
+      translationValue
+    }
+    languages(projectId: $projectId) {
+      id
+      languageName
+    }
+    translationkeys(projectId: $projectId) {
+      id
+      translationkeyName
+    }
+  }
 `;
 
-const ADD_LANGUAGE = gql`
-	mutation AddLanguage($name: String!, $projectId: Int!) {
-		createTranslationLanguage(input: { translationLanguage: { name: $name, projectId: $projectId } }) {
-			translationLanguage {
-				nodeId
-				name
-			}
-		}
-	}
-`;*/
 export default function ProjectView(props: any) {
-  // const history = useHistory();
-  //  const { id, name } = props.location.state;
-  //makeMockData
-  const project = {
-    name: "Smart-ID",
-    languages: [
-      { language: "English", nodeId: 1 },
-      { language: "Russian", nodeId: 2 },
-      { language: "Estonian", nodeId: 3 },
-      { language: "German", nodeId: 7 },
-    ],
-    keys: [
-      { key: "homeview.title", nodeId: 5 },
-      { key: "homeview.description", nodeId: 4 },
-      { key: "homeview.confirmButton", nodeId: 11 },
-      { key: "homeview.cancelButton", nodeId: 12 },
-    ],
-    nodeId: 10,
-  };
+  const project = props.location.state;
+  // console.log("project", project);
 
-  // const { loading, error, data: projectViewState } = useQuery(PROJECT_VIEW_QUERY);
+  // attempt to get projectTranslations list
+  const { data, loading, error } = useProjectTranslationsQuery({ variables: { projectId: project.id } });
 
-  // console.log(projectViewState);
-  // const [addKey] = useMutation(ADD_KEY);
+  // console.log("useProjectTranslationsQuery", data);
 
-  // const [addLanguage] = useMutation(ADD_LANGUAGE);
+  // handle error
+  if (error) {
+    // return <LandingView />;
+  }
+
+  // handle loading
+  if (loading || !data) {
+    //  return <SettingsView />;
+  }
 
   return (
     <div className="view projects-view">
-      {project ? (
-        <div key={project.nodeId}>
-          <ProjectHeader project={project} />
+      {data ? (
+        <div key={project.id}>
+          <ProjectHeader project={project.projectName} />
           <div className="table-container">
-            <TranslationsTable languages={project.languages} keys={project.keys} />
+            <TranslationsTable translations={data} />
           </div>
         </div>
       ) : (
         <p>Loading...</p>
       )}{" "}
-      *
     </div>
   );
 }

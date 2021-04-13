@@ -5,7 +5,6 @@ import { Session } from "../../lib/typeorm-express-session";
 import { DatabaseConfig } from "../config";
 import { closeDatabaseConnection } from "./closeDatabaseConnection";
 
-
 export async function openDatabaseConnection(
   databaseConfig: DatabaseConfig,
   userOptions: Partial<ConnectionOptions> = {
@@ -31,7 +30,7 @@ export async function openDatabaseConnection(
     database: "translatekeys",
     maxQueryExecutionTime: 1001,
     entities: [join(__dirname, "..", "entities", "!(*.test).+(ts|js)"), Session],
-    synchronize: databaseConfig.sync
+    synchronize: databaseConfig.sync,
   };
 
   // build combined options

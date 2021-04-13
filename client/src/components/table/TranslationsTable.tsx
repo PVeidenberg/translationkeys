@@ -1,65 +1,72 @@
 import * as React from "react";
- import Translation from "../translation/Translation";
- import TranslationKey  from "../translationKey/TranslationKey";
- import TranslationLanguage from "../translationLanguage/TranslationLanguage";
- import "./translation-table.scss";
+import { ProjectTranslationsQuery } from "../../schema";
+import Translation from "../translation/Translation";
+import TranslationKey from "../translationKey/TranslationKey";
+import TranslationLanguage from "../translationLanguage/TranslationLanguage";
+import "./translation-table.scss";
 
-// interface TableProps {
-// 	languages: Array<string | null>;
-// 	keys: Array<string| null>;
-// }
+interface TableProps {
+  translations: ProjectTranslationsQuery;
+}
 
-export default function TranslationsTable(props: any) {
-   const { languages, keys } = props;
+export default function TranslationsTable(props: TableProps) {
+  const { translations } = props;
+  // console.log("projectTranslations", translations["projectTranslations"]);
+  // console.log("projectlanguages", translations["languages"]);
+  // console.log("projecttranslationkeys", translations["translationkeys"]);
 
-  if (!languages || !keys) {
+  if (!translations) {
     return null;
   }
 
   return (
     <div className="styled-table">
-      <thead>
-        <tr>
-          <th key={0}>Key</th>
-          {languages.map(
-            (lang: any) =>
-              lang && (
-                <th key={lang.nodeId}>
-                  <TranslationLanguage translationLanguage={lang.language} />
-                </th>
-              )
-          )}
-        </tr>
-      </thead>
-      <tbody>{keys.map((key: any) => renderRow(key.key, languages))}</tbody>
+      <table>
+        <tbody>
+          <tr>
+            <th key={0}>Key</th>
+            {translations &&
+              translations["languages"].map(({ id, languageName }: any) => {
+                return (
+                  <th key={id}>
+                    <TranslationLanguage translationLanguage={languageName} />
+                  </th>
+                );
+              })}
+          </tr>
+        </tbody>
+        <tbody>
+          {translations &&
+            translations["translationkeys"].map(({ id, translationkeyName }: any) => {
+              return renderRow(translationkeyName, translations["projectTranslations"], translations["languages"]);
+            })}
+        </tbody>
+      </table>
     </div>
   );
-};
+}
 
-const renderRow = (
-  key: any | null,
-  languages: Array<any | null>
-) => {
-  if (!key) {
+const renderRow = (translationkeyName: string, projectTranslations: any, languages: any) => {
+  if (!translationkeyName) {
     return null;
   }
 
   return (
-    <tr key={key}>
+    <tr key={translationkeyName}>
       <td>
-        <TranslationKey translationKey={key} />
+        <TranslationKey translationKey={translationkeyName} />
       </td>
-      {languages.map((lang, index) => (
-        <td key={index}>
-          <div className="translation-container">
-            <Translation
-              translations={key}
-              language={lang.language}
-              keyId={key}
-            />
-          </div>
-        </td>
-      ))}
+      {projectTranslations.map(({ id, languageId, translationValue, translationkeyId }: any) => {
+        return (
+          <td key={id}>
+            <div className="translation-container">
+              <Translation
+                translationValue={translationValue} /*languageId={id} translationkeyId={translationkeyId}*/
+              />
+            </div>
+          </td>
+        );
+      })}
     </tr>
   );
 };

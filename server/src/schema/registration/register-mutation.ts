@@ -5,7 +5,6 @@ import { fieldLength } from "../../constants";
 import { UserEntity } from "../../entities/UserEntity";
 import { getKeyedHash } from "../../services/getKeyedHash";
 
-
 const schema: JSONSchema4 = {
   $async: true,
   type: "object",
@@ -61,7 +60,7 @@ export default mutationField("register", {
     const user = await UserEntity.register({
       name,
       email,
-      password
+      password,
     });
 
     // check if user has password associated with his account

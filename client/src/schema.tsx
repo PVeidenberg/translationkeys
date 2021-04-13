@@ -23,8 +23,12 @@ export type Language = {
 
 export type Mutation = {
   __typename?: "Mutation";
+  /** Adds new language */
+  addLanguage: Language;
   /** Adds new project */
   addProject: Project;
+  /** Adds new translation */
+  addTranslation: Translation;
   /** Adds new translationkey */
   addTranslationkey: Translationkey;
   /** Attempts to log user in */
@@ -33,18 +37,40 @@ export type Mutation = {
   logout: Scalars["Boolean"];
   /** Registers new user */
   register: Viewer;
+  /** Deletes excisting language */
+  removeLanguage: Scalars["Boolean"];
   /** Deletes excisting project */
   removeProject: Scalars["Boolean"];
-  /** Updates project name */
+  /** Deletes excisting translationkey */
+  removeTranslationKey: Scalars["Boolean"];
+  /** Updates excisting Language */
+  updateLanguage: Scalars["Boolean"];
+  /** Updates excisting project */
   updateProject: Scalars["Boolean"];
+  /** Updates excisting translation */
+  updateTranslation: Scalars["Boolean"];
+  /** Updates excisting project */
+  updateTranslationkey: Scalars["Boolean"];
+};
+
+export type MutationAddLanguageArgs = {
+  languageName: Scalars["String"];
+  projectId: Scalars["String"];
 };
 
 export type MutationAddProjectArgs = {
   projectName: Scalars["String"];
 };
 
+export type MutationAddTranslationArgs = {
+  languageId: Scalars["String"];
+  translationkeyId: Scalars["String"];
+  translationValue: Scalars["String"];
+};
+
 export type MutationAddTranslationkeyArgs = {
-  translationkeyName: Scalars["String"];
+  projectId: Scalars["String"];
+  translationKeyName: Scalars["String"];
 };
 
 export type MutationLoginArgs = {
@@ -58,8 +84,21 @@ export type MutationRegisterArgs = {
   password: Scalars["String"];
 };
 
+export type MutationRemoveLanguageArgs = {
+  id: Scalars["String"];
+};
+
 export type MutationRemoveProjectArgs = {
   id: Scalars["String"];
+};
+
+export type MutationRemoveTranslationKeyArgs = {
+  id: Scalars["String"];
+};
+
+export type MutationUpdateLanguageArgs = {
+  id: Scalars["String"];
+  languageName: Scalars["String"];
 };
 
 export type MutationUpdateProjectArgs = {
@@ -67,10 +106,21 @@ export type MutationUpdateProjectArgs = {
   projectName: Scalars["String"];
 };
 
+export type MutationUpdateTranslationArgs = {
+  id: Scalars["String"];
+  translationValue: Scalars["String"];
+};
+
+export type MutationUpdateTranslationkeyArgs = {
+  id: Scalars["String"];
+  translationkeyName: Scalars["String"];
+};
+
 export type Project = {
   __typename?: "Project";
   id: Scalars["ID"];
   projectName: Scalars["String"];
+  translations: Array<Translation>;
 };
 
 export type Query = {
@@ -79,6 +129,8 @@ export type Query = {
   languages: Array<Language>;
   /** Queries all projects */
   projects: Array<Project>;
+  /** Queries all translations */
+  projectTranslations: Array<Translation>;
   /** Queries all translationkeys */
   translationkeys: Array<Translationkey>;
   /** Queries all translations */
@@ -90,6 +142,10 @@ export type Query = {
 };
 
 export type QueryLanguagesArgs = {
+  projectId: Scalars["String"];
+};
+
+export type QueryProjectTranslationsArgs = {
   projectId: Scalars["String"];
 };
 
@@ -111,6 +167,8 @@ export type Tag = {
 export type Translation = {
   __typename?: "Translation";
   id: Scalars["ID"];
+  languageId: Scalars["ID"];
+  translationkeyId: Scalars["ID"];
   translationValue: Scalars["String"];
 };
 
@@ -168,6 +226,12 @@ export type LoginMutation = { __typename?: "Mutation" } & {
   login: { __typename?: "Viewer" } & Pick<Viewer, "id">;
 };
 
+export type RemoveProjectMutationVariables = Exact<{
+  id: Scalars["String"];
+}>;
+
+export type RemoveProjectMutation = { __typename?: "Mutation" } & Pick<Mutation, "removeProject">;
+
 export type RegisterMutationVariables = Exact<{
   name: Scalars["String"];
   email: Scalars["String"];
@@ -176,6 +240,18 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: "Mutation" } & {
   register: { __typename?: "Viewer" } & Pick<Viewer, "id">;
+};
+
+export type ProjectTranslationsQueryVariables = Exact<{
+  projectId: Scalars["String"];
+}>;
+
+export type ProjectTranslationsQuery = { __typename?: "Query" } & {
+  projectTranslations: Array<
+    { __typename?: "Translation" } & Pick<Translation, "id" | "languageId" | "translationkeyId" | "translationValue">
+  >;
+  languages: Array<{ __typename?: "Language" } & Pick<Language, "id" | "languageName">>;
+  translationkeys: Array<{ __typename?: "Translationkey" } & Pick<Translationkey, "id" | "translationkeyName">>;
 };
 
 export type ProjectsQueryVariables = Exact<{ [key: string]: never }>;
@@ -290,6 +366,42 @@ export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginM
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export const RemoveProjectDocument = gql`
+  mutation RemoveProject($id: String!) {
+    removeProject(id: $id)
+  }
+`;
+export type RemoveProjectMutationFn = Apollo.MutationFunction<RemoveProjectMutation, RemoveProjectMutationVariables>;
+
+/**
+ * __useRemoveProjectMutation__
+ *
+ * To run a mutation, you first call `useRemoveProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeProjectMutation, { data, loading, error }] = useRemoveProjectMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRemoveProjectMutation(
+  baseOptions?: Apollo.MutationHookOptions<RemoveProjectMutation, RemoveProjectMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RemoveProjectMutation, RemoveProjectMutationVariables>(RemoveProjectDocument, options);
+}
+export type RemoveProjectMutationHookResult = ReturnType<typeof useRemoveProjectMutation>;
+export type RemoveProjectMutationResult = Apollo.MutationResult<RemoveProjectMutation>;
+export type RemoveProjectMutationOptions = Apollo.BaseMutationOptions<
+  RemoveProjectMutation,
+  RemoveProjectMutationVariables
+>;
 export const RegisterDocument = gql`
   mutation Register($name: String!, $email: String!, $password: String!) {
     register(name: $name, email: $email, password: $password) {
@@ -327,8 +439,67 @@ export function useRegisterMutation(
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const ProjectTranslationsDocument = gql`
+  query ProjectTranslations($projectId: String!) {
+    projectTranslations(projectId: $projectId) {
+      id
+      languageId
+      translationkeyId
+      translationValue
+    }
+    languages(projectId: $projectId) {
+      id
+      languageName
+    }
+    translationkeys(projectId: $projectId) {
+      id
+      translationkeyName
+    }
+  }
+`;
+
+/**
+ * __useProjectTranslationsQuery__
+ *
+ * To run a query within a React component, call `useProjectTranslationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectTranslationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectTranslationsQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useProjectTranslationsQuery(
+  baseOptions: Apollo.QueryHookOptions<ProjectTranslationsQuery, ProjectTranslationsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<ProjectTranslationsQuery, ProjectTranslationsQueryVariables>(
+    ProjectTranslationsDocument,
+    options,
+  );
+}
+export function useProjectTranslationsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<ProjectTranslationsQuery, ProjectTranslationsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<ProjectTranslationsQuery, ProjectTranslationsQueryVariables>(
+    ProjectTranslationsDocument,
+    options,
+  );
+}
+export type ProjectTranslationsQueryHookResult = ReturnType<typeof useProjectTranslationsQuery>;
+export type ProjectTranslationsLazyQueryHookResult = ReturnType<typeof useProjectTranslationsLazyQuery>;
+export type ProjectTranslationsQueryResult = Apollo.QueryResult<
+  ProjectTranslationsQuery,
+  ProjectTranslationsQueryVariables
+>;
 export const ProjectsDocument = gql`
-  query projects {
+  query Projects {
     projects {
       id
       projectName

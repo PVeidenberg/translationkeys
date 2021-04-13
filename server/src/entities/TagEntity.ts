@@ -1,12 +1,6 @@
-import {
-    BaseEntity,
-    Column,
-    Entity,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-} from "typeorm";
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-  import { ProjectEntity } from "./ProjectEntity";
+import { ProjectEntity } from "./ProjectEntity";
 
 @Entity("tag")
 export class TagEntity extends BaseEntity {
@@ -16,6 +10,6 @@ export class TagEntity extends BaseEntity {
   @Column({ type: "text" })
   tagName!: string;
 
-  @ManyToOne(() => ProjectEntity, project => project.tags)
-    project: ProjectEntity;
+  @ManyToOne(() => ProjectEntity, (project) => project.tags)
+  project: ProjectEntity;
 }

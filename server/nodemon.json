@@ -1,0 +1,14 @@
+{
+  "restartable": "rs",
+  "ext": "ts tsx json",
+  "execMap": {
+    "ts": "node -r ./scripts/register --inspect=127.0.0.1:9229"
+  },
+  "signal": "SIGINT",
+  "watch": ["src/**/*", "lib/**/*", "scripts/**/*", "config/**/*"],
+  "ignore": [".git", "node_modules/**/node_modules"],
+  "verbose": false,
+  "env": {
+    "NODE_ENV": "development"
+  }
+}

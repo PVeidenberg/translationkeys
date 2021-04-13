@@ -1,12 +1,18 @@
 .styled-translation {
-    background: '#dae4ed';
-	padding: 10px;
-	min-width: 50px;
-	cursor: pointer;
-	flex-grow: 1;
-	white-space: pre-wrap;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+  min-width: 50px;
+  min-height: 50px;
+  cursor: pointer;
+  outline: 0px solid transparent;
+  white-space: pre-wrap;
+  background: "#dae4ed";
 }
 
 .styled-button {
-    width: 100%;
+  width: 100%;
 }

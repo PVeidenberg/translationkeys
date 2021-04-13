@@ -1,22 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import "./projects-view.scss";
 import Header from "../../components/header/Header";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import { useProjectsQuery, useAddProjectMutation } from "../../schema";
 import { Field } from "../../components/Field/Field";
-// import { useProjectsQuery, useAddProjectMutation } from "../../schema";
+import { validateMinimumLength } from "../../validators/validateMinimumLength";
 import ProjectNameContainer from "../../components/projectNameContainer/ProjectNameContainer";
 import { gql } from "@apollo/client";
-import Paths from "../../Paths";
 
 interface ProjectsFormValues {
-  projectName: string;
+  name: string;
 }
 
 // get all projects query
 gql`
-  query projects {
+  query Projects {
     projects {
       id
       projectName
@@ -34,8 +33,8 @@ gql`
 `;
 
 export default function ProjectsView(props: any) {
-  const history = useHistory();
-  const { register, handleSubmit, errors, watch } = useForm<ProjectsFormValues>();
+  // const history = useHistory();
+  const { register, handleSubmit, errors } = useForm<ProjectsFormValues>();
 
   // attempt to get projects list
   const { data, loading, error } = useProjectsQuery();
@@ -50,17 +49,16 @@ export default function ProjectsView(props: any) {
     //  return <SettingsView />;
   }
 
-  // setup login mutation
+  // setup addProject mutation
   const [addProject, addProjectResult] = useAddProjectMutation({
-    refetchQueries: ["projects"],
+    refetchQueries: ["Projects"],
     awaitRefetchQueries: true,
   });
 
   // addproject on submit
-  const onSubmit: SubmitHandler<ProjectsFormValues> = async ({ projectName }) => {
-    console.log(projectName);
+  const onSubmit: SubmitHandler<ProjectsFormValues> = async ({ name }) => {
     const response = await addProject({
-      variables: { projectName },
+      variables: { projectName: name },
     });
   };
 
@@ -70,20 +68,19 @@ export default function ProjectsView(props: any) {
       <div className="projects-title">Projects</div>
       <form className="projects-input-container" onSubmit={handleSubmit(onSubmit)}>
         <Field
+          className="projects-add-field"
           type="text"
-          id="name"
           name="name"
           label=""
+          projects={true}
           defaultValue=""
-          error={errors.projectName}
-          register={register}
+          error={errors.name}
+          register={register({ validate: validateMinimumLength(1) })}
         />
         <input className="projects-input-button" type="submit" value="Add Project" />
       </form>
       {data &&
         data.projects.map((project: any, index: number) => {
-          console.log(project.id);
-          console.log(index);
           if (!project) {
             return;
           }

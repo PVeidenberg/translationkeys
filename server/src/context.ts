@@ -1,5 +1,5 @@
 import { Locale } from "./constants";
-import { UserEntity} from "./entities/UserEntity";
+import { UserEntity } from "./entities/UserEntity";
 // import { createTypeormLoader, DataLoaderFactory } from "./services/dataLoader";
 
 // session information
@@ -21,7 +21,7 @@ export interface RequestMetadata {
 
 // application context passed to resolvers etc, exists one per query
 export class Context {
-//   loader: DataLoaderFactory;
+  //   loader: DataLoaderFactory;
 
   constructor(public session: SessionInfo, public viewer: UserEntity | undefined, public metadata: RequestMetadata) {
     // setup generic loader for simple get-by-id batch queries
@@ -53,12 +53,12 @@ export class Context {
     return true;
   };
 
-//   hasAnyScopes = (authorizedScopes: UserScope[]) => {
-//     if (!this.viewer) {
-//       return false;
-//     }
+  //   hasAnyScopes = (authorizedScopes: UserScope[]) => {
+  //     if (!this.viewer) {
+  //       return false;
+  //     }
 
-//     // user needs to have at least one of the accepted scopes
-//     return this.viewer.scopes.some((userScope) => authorizedScopes.includes(userScope));
-//   };
+  //     // user needs to have at least one of the accepted scopes
+  //     return this.viewer.scopes.some((userScope) => authorizedScopes.includes(userScope));
+  //   };
 }

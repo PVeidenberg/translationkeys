@@ -1,7 +1,9 @@
 .translation-key-container {
-	padding: 20px 30px 0;
-	font-size: 25px;
-	margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20px 20px 20px 0;
+  font-size: 25px;
 }
 
 .deleteIcon {
@@ -16,9 +18,8 @@
 }
 
 .styled-translation-key {
-    background: "#dae4ed";
-    padding: 10px;
-    padding-left: 5px;
-    min-width: 10px;
-    cursor: pointer;
+  background: "#dae4ed";
+  padding: 10px 10px 10px 0;
+  min-width: 10px;
+  cursor: pointer;
 }

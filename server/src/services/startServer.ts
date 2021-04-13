@@ -9,8 +9,6 @@ import { closeDatabaseConnection } from "./closeDatabaseConnection";
 import { openDatabaseConnection } from "./openDatabaseConnection";
 import { createServer } from "./createServer";
 
-
-
 export interface Server {
   app: Application;
   port: number;
@@ -24,14 +22,14 @@ export async function startServer(overrideConfig: DeepPartial<Config> = {}): Pro
   await openDatabaseConnection(config.database);
 
   // setup the server
-  const { apolloServer, app} = await setupApp(config);
+  const { apolloServer, app } = await setupApp(config);
 
   // create the http(s) server
   const httpServer = createServer(app);
 
   // start the server
   httpServer.listen(config.server.port, () => {
-    console.log("server started")
+    console.log("server started");
   });
 
   // listen for interrupt and shut down gracefully, releasing all resources

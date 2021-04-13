@@ -44,7 +44,7 @@ export const App: React.FC = () => {
   const viewer = data && data.viewer;
   const isLoggedIn = viewer !== null;
   setIsAuthenticated(isLoggedIn);
-  console.log("isLoggedIn", isLoggedIn);
+  // console.log("isLoggedIn", isLoggedIn);
 
   // decide path to redirect to from root path based on whether the user is logged in
   const indexPath = isLoggedIn ? Paths.projects : Paths.landing;

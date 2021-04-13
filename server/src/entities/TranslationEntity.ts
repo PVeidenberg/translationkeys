@@ -1,10 +1,4 @@
-import {
-    BaseEntity,
-    Column,
-    Entity,
-    PrimaryGeneratedColumn,
-    ManyToOne
-} from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 import { LanguageEntity } from "./LanguageEntity";
 import { TranslationkeyEntity } from "./TranslationkeyEntity";
 
@@ -13,12 +7,18 @@ export class TranslationEntity extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   readonly id!: string;
 
-  @Column({ type: "text"})
+  @Column({ type: "text" })
+  languageId: string;
+
+  @Column({ type: "text" })
+  translationkeyId: string;
+
+  @Column({ type: "text" })
   translationValue!: string;
 
-  @ManyToOne(() => LanguageEntity, translation => translation.id)
+  @ManyToOne(() => LanguageEntity, (translation) => translation.id, { cascade: true, onDelete: "CASCADE" })
   language: LanguageEntity;
 
-  @ManyToOne(() => TranslationkeyEntity, translation => translation.id)
+  @ManyToOne(() => TranslationkeyEntity, (translation) => translation.id, { cascade: true, onDelete: "CASCADE" })
   translationkey: TranslationkeyEntity;
 }

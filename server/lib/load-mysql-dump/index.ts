@@ -29,7 +29,7 @@ export default async function loadMysqlDump(config: Partial<MysqlDumpConfig> = {
 
   const command = `psql "postgresql://${cfg.user}:${cfg.password}@${cfg.host}:${cfg.port}/${cfg.database}" < ${cfg.filename}`;
 
-  console.log(command)
+  console.log(command);
 
   return new Promise<MysqlDumpResult>((resolve, reject) => {
     const startTime = Date.now();

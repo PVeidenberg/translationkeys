@@ -1,27 +1,19 @@
 import { mutationField, stringArg } from "@nexus/schema";
 import { LanguageEntity } from "../../entities/LanguageEntity";
 
-export default mutationField("addProject", {
-  type: "Project",
+export default mutationField("addLanguage", {
+  type: "Language",
   args: {
-    languageName: stringArg()
+    projectId: stringArg(),
+    languageName: stringArg(),
   },
-  description: "Adds new project",
+  description: "Adds new language",
   resolve: async (_parent, args, context) => {
-    const { viewer } = context;
+    const language = await LanguageEntity.create({
+      languageName: args.languageName,
+      project: args.projectId,
+    }).save();
 
-    // check if project name already exists
-    if (viewer.projects.some(project => project.projectName === args.projectName)) {
-      throw new Error("Project name already exists");
-    }
-
-    const project = LanguageEntity.create({
-        languageName: args.languageName
-    });
-
-    viewer.projects.push(project);
-    await viewer.save()
-
-    return project;
+    return language;
   },
 });

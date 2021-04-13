@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { defaultLocale} from "../constants";
+import { defaultLocale } from "../constants";
 import { SessionInfo, RequestMetadata, Context } from "../context";
 import { UserEntity } from "../entities/UserEntity";
 

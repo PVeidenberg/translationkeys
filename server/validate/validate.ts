@@ -11,11 +11,7 @@ import { getFormats } from "./getFormats";
 import { ValidationError } from "./ValidationError";
 
 // list of default validators always available
-const defaultValidators: CustomValidator[] = [
-  validateUniqueEmail(),
-  validateExistingUser(),
-  validateExistingEmail(),
-];
+const defaultValidators: CustomValidator[] = [validateUniqueEmail(), validateExistingUser(), validateExistingEmail()];
 
 export async function validate(data: JSONObject, schema: JSONSchema4, extraValidators?: CustomValidator[]) {
   // configure validator

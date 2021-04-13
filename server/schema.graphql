@@ -8,14 +8,24 @@ type Language {
 
 type Mutation {
   """
+  Adds new language
+  """
+  addLanguage(languageName: String!, projectId: String!): Language!
+
+  """
   Adds new project
   """
   addProject(projectName: String!): Project!
 
   """
+  Adds new translation
+  """
+  addTranslation(languageId: String!, translationkeyId: String!, translationValue: String!): Translation!
+
+  """
   Adds new translationkey
   """
-  addTranslationkey(translationkeyName: String!): Translationkey!
+  addTranslationkey(projectId: String!, translationKeyName: String!): Translationkey!
 
   """
   Attempts to log user in
@@ -58,19 +68,45 @@ type Mutation {
   ): Viewer!
 
   """
+  Deletes excisting language
+  """
+  removeLanguage(id: String!): Boolean!
+
+  """
   Deletes excisting project
   """
   removeProject(id: String!): Boolean!
 
   """
-  Updates project name
+  Deletes excisting translationkey
+  """
+  removeTranslationKey(id: String!): Boolean!
+
+  """
+  Updates excisting Language
+  """
+  updateLanguage(id: String!, languageName: String!): Boolean!
+
+  """
+  Updates excisting project
   """
   updateProject(id: String!, projectName: String!): Boolean!
+
+  """
+  Updates excisting translation
+  """
+  updateTranslation(id: String!, translationValue: String!): Boolean!
+
+  """
+  Updates excisting project
+  """
+  updateTranslationkey(id: String!, translationkeyName: String!): Boolean!
 }
 
 type Project {
   id: ID!
   projectName: String!
+  translations: [Translation!]!
 }
 
 type Query {
@@ -83,6 +119,11 @@ type Query {
   Queries all projects
   """
   projects: [Project!]!
+
+  """
+  Queries all translations
+  """
+  projectTranslations(projectId: String!): [Translation!]!
 
   """
   Queries all translationkeys
@@ -112,6 +153,8 @@ type Tag {
 
 type Translation {
   id: ID!
+  languageId: ID!
+  translationkeyId: ID!
   translationValue: String!
 }
 

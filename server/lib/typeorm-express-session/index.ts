@@ -15,7 +15,7 @@ export class Session extends BaseEntity {
   @PrimaryColumn("text")
   id!: string;
 
-  @Column({ type: "text", nullable: true})
+  @Column({ type: "text", nullable: true })
   @Index()
   userId!: string;
 
@@ -73,7 +73,6 @@ export class TypeormSessionStore extends Store {
 
       // respond with nothing if not found or expired
       if (!session || session.expiryDate.getTime() < Date.now()) {
-
         callback();
 
         return;
@@ -137,7 +136,6 @@ export class TypeormSessionStore extends Store {
             sid,
           })
           .execute();
-
       } catch (_error) {
         // session probably does not exist, ignore
       }

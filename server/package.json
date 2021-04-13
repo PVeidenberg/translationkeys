@@ -3,7 +3,9 @@
     "start": "nodemon scripts/start.ts",
     "dev": "nodemon scripts/start.ts",
     "migrate": "node -r ./scripts/register scripts/migrate",
-    "seed": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed"
+    "seed": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
+    "prettier": "npx prettier --write **/*.ts",
+    "prettier-check": "npx prettier --list-different **/*.ts"
   },
   "dependencies": {
     "@nexus/schema": "^0.18.0",

@@ -4,23 +4,15 @@ import { TranslationkeyEntity } from "../../entities/TranslationkeyEntity";
 export default mutationField("addTranslationkey", {
   type: "Translationkey",
   args: {
-    translationkeyName: stringArg()
+    projectId: stringArg(),
+    translationKeyName: stringArg(),
   },
   description: "Adds new translationkey",
   resolve: async (_parent, args, context) => {
-    const { viewer } = context;
-
-    // check if project name already exists
-    if (viewer.projects.some(project => project.projectName === args.projectName)) {
-      throw new Error("Project name already exists");
-    }
-
-    const translationkey = TranslationkeyEntity.create({
-      translationkeyName: args.translationkeyName
-    });
-
-    viewer.translations.push(translationkey);
-    await viewer.save()
+    const translationkey = await TranslationkeyEntity.create({
+      translationkeyName: args.translationKeyName,
+      project: args.projectId,
+    }).save();
 
     return translationkey;
   },

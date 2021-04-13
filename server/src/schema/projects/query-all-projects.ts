@@ -9,8 +9,8 @@ export default queryField("projects", {
     const { viewer } = context;
 
     return ProjectEntity.createQueryBuilder("project")
-    .innerJoin("project.users", "user")
-    .where("user.id = :userId", { userId: viewer.id })
-    .getMany();
+      .innerJoin("project.users", "user")
+      .where("user.id = :userId", { userId: viewer.id })
+      .getMany();
   },
 });

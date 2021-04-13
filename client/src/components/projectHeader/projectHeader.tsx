@@ -13,7 +13,7 @@ gql`
 `;
 
 export default function Header(props: any) {
-  const { name, nodeId } = props.project;
+  const projectName = props.project;
   const [logout, logoutResult] = useLogoutMutation({
     refetchQueries: ["Viewer"],
     awaitRefetchQueries: true,
@@ -35,14 +35,14 @@ export default function Header(props: any) {
   };
 
   const handleToSettingsView = () => {
-    history.push({ pathname: `/project/${name}/settings` });
+    history.push({ pathname: `/project/${projectName}/settings` });
   };
 
   return (
     <div className="project-header-container">
       <div>
         <span>Project: </span>
-        <strong>{name}</strong>
+        <strong>{projectName}</strong>
       </div>
       <div>
         <div className="controls">

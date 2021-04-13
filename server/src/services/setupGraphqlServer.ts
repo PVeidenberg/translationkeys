@@ -35,7 +35,7 @@ export function setupGraphqlServer({
     playground: playgroundEnabled ? playgroundConfig : false,
     context: async ({ req: request, connection }: ApolloContext) => {
       // handle context for web-socket connections (context is resolved by subscriptions > onConnect)
-      
+
       if (connection) {
         return connection.context;
       }
@@ -47,7 +47,6 @@ export function setupGraphqlServer({
 
       // create and return request context
       return createContext(request);
-      
     },
     ...apolloOptions,
   });

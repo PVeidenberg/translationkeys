@@ -1,18 +1,10 @@
-import {
-    BaseEntity,
-    Column,
-    Entity,
-    ManyToMany,
-    JoinTable,
-    PrimaryGeneratedColumn,
-} from "typeorm";
+import { BaseEntity, Column, Entity, ManyToMany, JoinTable, PrimaryGeneratedColumn } from "typeorm";
 import { ProjectEntity } from "./ProjectEntity";
 import { fieldLength } from "../constants";
 import { generateRandomString } from "../services/generateRandomString";
 import { getKeyedHash } from "../services/getKeyedHash";
 // import { config } from "../config";
 import { TypeormSessionStore } from "../../lib/typeorm-express-session/index";
-
 
 /*export enum UserRole {
     REGULAR = "REGULAR",
@@ -22,80 +14,79 @@ import { TypeormSessionStore } from "../../lib/typeorm-express-session/index";
 }*/
 
 export interface RegisterUserInfo {
-    name: string;
-    email: string;
-    password: string;
-   // roles: UserRole[];
-  }
-
+  name: string;
+  email: string;
+  password: string;
+  // roles: UserRole[];
+}
 
 @Entity("user")
 export class UserEntity extends BaseEntity {
-    @PrimaryGeneratedColumn("uuid")
-    readonly id!: string;
+  @PrimaryGeneratedColumn("uuid")
+  readonly id!: string;
 
-    @Column({ type: "text" })
-    name!: string;
+  @Column({ type: "text" })
+  name!: string;
 
-    @Column({ type: "text" })
-    email!: string;
-    
-    @Column({ type: "text"})
-    password!: string;
+  @Column({ type: "text" })
+  email!: string;
 
-   /* @Column({ type: "text", unique: true, nullable: true })
+  @Column({ type: "text" })
+  password!: string;
+
+  /* @Column({ type: "text", unique: true, nullable: true })
     validateEmailToken!: string | null;
   
     @Column({ type: "date", nullable: true })
     validateEmailExpiryDate!: Date | null;*/
 
-    @Column({ type: "text", nullable: true })
-    passwordSalt!: string | null;
+  @Column({ type: "text", nullable: true })
+  passwordSalt!: string | null;
 
-    @Column({ type: "text", nullable: true })
-    passwordHash!: string | null;
+  @Column({ type: "text", nullable: true })
+  passwordHash!: string | null;
 
-    // @Column({
-    //     type: "set",
-    //     enum: UserRole,
-    //     default: [UserRole.REGULAR],
-    //   })
-    //   roles!: UserRole[];
+  // @Column({
+  //     type: "set",
+  //     enum: UserRole,
+  //     default: [UserRole.REGULAR],
+  //   })
+  //   roles!: UserRole[];
 
-    @ManyToMany(() => ProjectEntity, project => project.users, { eager: true, cascade: true, onDelete: "CASCADE" })
-    @JoinTable()
-    projects: ProjectEntity[];
+  @ManyToMany(() => ProjectEntity, (project) => project.users, { eager: true, cascade: true, onDelete: "CASCADE" })
+  @JoinTable()
+  projects: ProjectEntity[];
 
-    static async register(info: RegisterUserInfo): Promise<UserEntity> {
-        const passwordSalt = generateRandomString(fieldLength.hash);
-        const passwordHash = getKeyedHash(info.password, passwordSalt);
-    
-        const user = await UserEntity.create({
-            email: info.email,
-            name: info.name,
-            password: info.password,
-            passwordSalt,
-            passwordHash,
-            // ...UserEntity.generateValidateEmailToken(),
-          }).save();
-    
-        return user;
-    }
+  static async register(info: RegisterUserInfo): Promise<UserEntity> {
+    const passwordSalt = generateRandomString(fieldLength.hash);
+    const passwordHash = getKeyedHash(info.password, passwordSalt);
 
-    // static generateValidateEmailToken() {
-    //     // generate 36 long random string
-    //     const validateEmailToken = generateRandomString(fieldLength.uuid);
+    const user = await UserEntity.create({
+      email: info.email,
+      name: info.name,
+      password: info.password,
+      passwordSalt,
+      passwordHash,
+      // ...UserEntity.generateValidateEmailToken(),
+    }).save();
 
-    //     // create expiry date in the future
-    //     const validateEmailExpiryDate = new Date(Date.now() + config.rules.validateEmailValidForSeconds * 1000);
+    return user;
+  }
 
-    //     return {
-    //         validateEmailToken,
-    //         validateEmailExpiryDate,
-    //     };
-    // }
+  // static generateValidateEmailToken() {
+  //     // generate 36 long random string
+  //     const validateEmailToken = generateRandomString(fieldLength.uuid);
 
-    async destroyAllSessions() {
-        return TypeormSessionStore.destroyUserSession(this.id);
-      }
+  //     // create expiry date in the future
+  //     const validateEmailExpiryDate = new Date(Date.now() + config.rules.validateEmailValidForSeconds * 1000);
+
+  //     return {
+  //         validateEmailToken,
+  //         validateEmailExpiryDate,
+  //     };
+  // }
+
+  async destroyAllSessions() {
+    return TypeormSessionStore.destroyUserSession(this.id);
+  }
 }

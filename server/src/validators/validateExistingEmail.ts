@@ -13,7 +13,6 @@ export function validateExistingEmail(): CustomValidator {
         normalizedEmail,
       });
 
-
       // attempt to find user
       const user = await userQuery.getOne();
 

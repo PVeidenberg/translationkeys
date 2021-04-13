@@ -21,7 +21,7 @@ async function run() {
   // show an empty line between previous content
   console.log("");
 
-  console.log(config)
+  console.log(config);
 
   // create the migrator
   const migrator = new Migrator<AppMigrationContext>(

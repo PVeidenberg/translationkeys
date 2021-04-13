@@ -1,17 +1,34 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import "./project-name-container.scss";
-import { useMutation } from "@apollo/client";
+import { useRemoveProjectMutation } from "../../schema";
+import { gql } from "@apollo/client";
+
+// add-projects mutation (generates useLoginMutation hook)
+gql`
+  mutation RemoveProject($id: String!) {
+    removeProject(id: $id)
+  }
+`;
 
 export default function ProjectNameContainer(props: { project: any; index: number }) {
   const [isDeletingOpened, setIsDeletingOpened] = useState(false);
 
-  const { projectName } = props.project;
+  // setup removeProject mutation
+  const [removeProject, removeProjectResult] = useRemoveProjectMutation({
+    refetchQueries: ["Projects"],
+    awaitRefetchQueries: true,
+  });
+
+  const { projectName, id } = props.project;
   const { index } = props;
 
-  const handleDeleteProject = (projectName: string, e: any) => {
+  const handleDeleteProject = async (e: any) => {
     e.preventDefault();
+    const response = await removeProject({
+      variables: { id },
+    });
   };
 
   const deletingButtons = (
@@ -24,7 +41,7 @@ export default function ProjectNameContainer(props: { project: any; index: numbe
         >
           Close
         </button>
-        <button onClick={(e) => handleDeleteProject(projectName, e)}>Delete Project</button>
+        <button onClick={(e) => handleDeleteProject(e)}>Delete Project</button>
       </div>
     </div>
   );
