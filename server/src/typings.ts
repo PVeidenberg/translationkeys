@@ -85,6 +85,7 @@ export interface NexusGenFieldTypes {
     register: NexusGenRootTypes["Viewer"]; // Viewer!
     removeLanguage: boolean; // Boolean!
     removeProject: boolean; // Boolean!
+    removeTranslation: boolean; // Boolean!
     removeTranslationKey: boolean; // Boolean!
     updateLanguage: boolean; // Boolean!
     updateProject: boolean; // Boolean!
@@ -93,6 +94,7 @@ export interface NexusGenFieldTypes {
   };
   Project: {
     // field return type
+    apiKey: string; // String!
     id: string; // ID!
     projectName: string; // String!
     translations: NexusGenRootTypes["Translation"][]; // [Translation!]!
@@ -161,6 +163,7 @@ export interface NexusGenFieldTypeNames {
     register: "Viewer";
     removeLanguage: "Boolean";
     removeProject: "Boolean";
+    removeTranslation: "Boolean";
     removeTranslationKey: "Boolean";
     updateLanguage: "Boolean";
     updateProject: "Boolean";
@@ -169,6 +172,7 @@ export interface NexusGenFieldTypeNames {
   };
   Project: {
     // field return type name
+    apiKey: "String";
     id: "ID";
     projectName: "String";
     translations: "Translation";
@@ -258,6 +262,10 @@ export interface NexusGenArgTypes {
       id: string; // String!
     };
     removeProject: {
+      // args
+      id: string; // String!
+    };
+    removeTranslation: {
       // args
       id: string; // String!
     };

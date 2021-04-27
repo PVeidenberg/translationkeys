@@ -1,6 +1,8 @@
 import { useState } from "react";
 import * as React from "react";
 import "./translation-language.scss";
+import { gql } from "@apollo/client";
+import { useRemoveLanguageMutation } from "../../schema";
 
 interface StyledTranslationlanguageProps {
   isNotSaved?: boolean;
@@ -8,26 +10,51 @@ interface StyledTranslationlanguageProps {
 
 interface TranslationLanguage {
   translationLanguage: string;
+  translationId: string;
 }
 
+// removeLanguage mutation (generates useRemoveLanguageMutation hook)
+gql`
+  mutation RemoveLanguage($id: String!) {
+    removeLanguage(id: $id)
+  }
+`;
+
 export default function TranslationLanguage(props: TranslationLanguage) {
-  // const { translationLanguage: language } = props;
-  const { translationLanguage } = props;
+  const { translationLanguage, translationId } = props;
 
   const initialValue = translationLanguage;
   const [isActive, setIsActive] = useState(false);
   const [currentValue, setCurrentValue] = useState(initialValue);
   const isNotSaved = initialValue !== currentValue;
 
+  // setup addProject mutation
+  const [removeLanguage, removeLanguageResult] = useRemoveLanguageMutation({
+    refetchQueries: ["ProjectTranslations"],
+    awaitRefetchQueries: true,
+  });
+
   if (!translationLanguage) {
     return null;
   }
 
-  let ref: any = {};
+  const handleUpdateLanguage = async (e: any) => {
+    e.preventDefault();
+    console.log("adasddas");
+    await removeLanguage({
+      variables: { id: translationId },
+    });
+  };
 
-  //   useEffect(() => ref.focus(), [isActive]);
-  //   const [updateKey] = useMutation(UPDATE_LANGUAGE);
-  //   const [deleteKey] = useMutation(DELETE_LANGUAGE);
+  const handleDeleteLanguage = async (e: any) => {
+    e.preventDefault();
+    console.log("adasddas");
+    await removeLanguage({
+      variables: { id: translationId },
+    });
+  };
+
+  let ref: any = {};
 
   return (
     <div className="translation-language-container">
@@ -59,11 +86,3 @@ export default function TranslationLanguage(props: TranslationLanguage) {
     </div>
   );
 }
-
-const handleUpdateLanguage = (e: any) => {
-  e.preventDefault();
-};
-
-const handleDeleteLanguage = (e: any) => {
-  e.preventDefault();
-};

@@ -2,7 +2,7 @@
   padding: 2px 5px;
   visibility: hidden;
   cursor: pointer;
-  font-size: 24px;
+  font-size: 40px;
 
   &:hover {
     color: red;
@@ -12,9 +12,13 @@
 .translation-language-container {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   min-width: 200px;
 
   &:hover {
+    .delete-icon {
+      visibility: visible;
+    }
   }
 }
 

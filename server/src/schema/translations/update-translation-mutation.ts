@@ -22,7 +22,7 @@ export default mutationField("updateTranslation", {
         .set({ translationValue: args.translationValue })
         .where("id = :id", { id: args.id })
         .execute();
-      console.log("result", result);
+      // console.log("result", result);
     } catch (err) {
       console.log("Updating translation failed", err);
     }

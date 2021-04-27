@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import classnames from "classnames";
 import "./field.scss";
 import { UseFormMethods, FieldError } from "react-hook-form";
@@ -32,19 +32,19 @@ export const Field = React.forwardRef<HTMLInputElement, FieldProps>(function Fie
   },
   ref,
 ) {
-  const [hasValue, setHasValue] = useState(false);
-  const [hasFocus, setHasFocus] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [isActivated, setIsActivated] = useState(isActive === true ? false : true);
+  // const [hasValue, setHasValue] = useState(false);
+  // const [hasFocus, setHasFocus] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
+  // const [isActivated, setIsActivated] = useState(isActive === true ? false : true);
 
-  const handleValueChange = (value: string) => {
-    const hasValueNow = value.length > 0;
+  // const handleValueChange = (value: string) => {
+  //   const hasValueNow = value.length > 0;
 
-    // only update state if having value has changed
-    if (hasValueNow !== hasValue) {
-      setHasValue(hasValueNow);
-    }
-  };
+  //   // only update state if having value has changed
+  //   if (hasValueNow !== hasValue) {
+  //     setHasValue(hasValueNow);
+  //   }
+  // };
 
   // toggle password button (both show and hide icons are shown on top of each other and faded in/out)
 

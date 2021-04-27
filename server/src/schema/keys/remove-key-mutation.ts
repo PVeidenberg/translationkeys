@@ -20,7 +20,7 @@ export default mutationField("removeTranslationKey", {
         .delete()
         .where("id = :id", { id: args.id })
         .execute();
-      console.log("result", result);
+      // console.log("result", result);
     } catch (err) {
       console.log("Delete translationkey failed", err);
     }

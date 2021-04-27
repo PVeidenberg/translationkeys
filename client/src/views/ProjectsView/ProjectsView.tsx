@@ -19,6 +19,7 @@ gql`
     projects {
       id
       projectName
+      apiKey
     }
   }
 `;
@@ -38,6 +39,8 @@ export default function ProjectsView(props: any) {
 
   // attempt to get projects list
   const { data, loading, error } = useProjectsQuery();
+
+  console.log("data", data);
 
   // // handle error
   if (error) {

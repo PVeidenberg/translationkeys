@@ -11,7 +11,7 @@ export default mutationField("addLanguage", {
   resolve: async (_parent, args, context) => {
     const language = await LanguageEntity.create({
       languageName: args.languageName,
-      project: args.projectId,
+      projectId: args.projectId,
     }).save();
 
     return language;

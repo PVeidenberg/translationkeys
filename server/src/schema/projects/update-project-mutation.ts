@@ -22,7 +22,6 @@ export default mutationField("updateProject", {
         .set({ projectName: args.projectName })
         .where("id = :id", { id: args.id })
         .execute();
-      console.log("result", result);
     } catch (err) {
       console.log("Updating project failed", err);
     }

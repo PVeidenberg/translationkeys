@@ -12,6 +12,9 @@ export class ProjectEntity extends BaseEntity {
   @Column({ type: "text" })
   projectName!: string;
 
+  @Column({ type: "text" })
+  apiKey!: string
+
   @OneToMany(() => LanguageEntity, (language) => language.project)
   languages: LanguageEntity[];
 

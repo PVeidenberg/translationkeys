@@ -1,6 +1,7 @@
 .styled-table {
-    border-collapse: collapse;
+  border-collapse: collapse;
   height: 100%;
+  width: 100%;
 
   th,
   td {
@@ -19,7 +20,6 @@
 }
 
 .translation-container {
-    height: 100%;
-	display: flex;
-	flex-direction: column;
+  height: 100%;
+  width: 100%;
 }

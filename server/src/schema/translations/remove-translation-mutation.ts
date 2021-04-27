@@ -1,7 +1,7 @@
 import { mutationField, stringArg } from "@nexus/schema";
 import { TranslationEntity } from "../../entities/TranslationEntity";
 
-export default mutationField("removeLanguage", {
+export default mutationField("removeTranslation", {
   type: "Boolean",
   args: {
     id: stringArg(),
@@ -20,7 +20,7 @@ export default mutationField("removeLanguage", {
         .delete()
         .where("id = :id", { id: args.id })
         .execute();
-      console.log("result", result);
+      console.log("midagasdimuusd", result);
     } catch (err) {
       console.log("Delete language failed", err);
     }

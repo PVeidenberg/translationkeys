@@ -11,7 +11,7 @@ export default mutationField("addTranslationkey", {
   resolve: async (_parent, args, context) => {
     const translationkey = await TranslationkeyEntity.create({
       translationkeyName: args.translationKeyName,
-      project: args.projectId,
+      projectId: args.projectId,
     }).save();
 
     return translationkey;

@@ -10,6 +10,7 @@ export default objectType({
   definition(t) {
     t.id("id");
     t.string("projectName");
+    t.string("apiKey");
     t.list.field("translations", {
       type: "Translation",
       resolve: async (project, _args, _context) => {

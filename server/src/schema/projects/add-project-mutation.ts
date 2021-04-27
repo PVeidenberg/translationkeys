@@ -1,6 +1,7 @@
 import { mutationField, stringArg } from "@nexus/schema";
 import { UnauthorizedError } from "../../../validate";
 import { ProjectEntity } from "../../entities/ProjectEntity";
+const crypto = require("crypto");
 
 export default mutationField("addProject", {
   type: "Project",
@@ -19,8 +20,12 @@ export default mutationField("addProject", {
       throw new Error("Project name already exists");
     }
 
+    const rand = crypto.randomBytes(20);
+    const unique_id = rand.toString("hex");
+
     const project = ProjectEntity.create({
       projectName: args.projectName,
+      apiKey: unique_id,
     });
 
     viewer.projects.push(project);

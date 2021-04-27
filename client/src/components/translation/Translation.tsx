@@ -14,19 +14,25 @@ interface TranslationProps {
 export default function Translation(props: any) {
   const { translationValue } = props;
 
-  console.log("translationTranslation", translationValue);
-
   const initialValue = "";
 
   const [isActive, setIsActive] = useState(false);
   const [currentValue, setCurrentValue] = useState(initialValue);
   const isNotSaved = initialValue !== currentValue;
 
-  if (!translationValue) {
-    return null;
-  }
-
   const existingTranslation = "";
+
+  if (!translationValue) {
+    <div
+      className="styled-translation"
+      contentEditable={isActive}
+      suppressContentEditableWarning={true}
+      onClick={(e: any) => {
+        setIsActive(true);
+      }}
+      onKeyUp={(e: any) => setCurrentValue("asdasd")}
+    ></div>;
+  }
 
   // 	useEffect(() => setCurrentValue(initialValue), [initialValue]);
   // 	useEffect(() => ref.focus(), [isActive]);

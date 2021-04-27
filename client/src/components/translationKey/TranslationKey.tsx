@@ -3,6 +3,8 @@ import * as React from "react";
 import { useMutation } from "@apollo/client";
 import TranslationsTable from "../../components/table/TranslationsTable";
 import "./translation-key.scss";
+import { gql } from "@apollo/client";
+import { useRemoveTranslationKeyMutation } from "../../schema";
 
 interface StyledTranslationProps {
   isNotSaved?: boolean;
@@ -10,52 +12,35 @@ interface StyledTranslationProps {
 
 interface TranslationKeyProps {
   translationKey: string;
+  translationKeyId: string;
 }
 
-// const UPDATE_KEY = gql`
-//   mutation UpdateKey($nodeId: ID!, $name: String) {
-//     updateTranslationKey(
-//       input: { nodeId: $nodeId, translationKeyPatch: { name: $name } }
-//     ) {
-//       translationKey {
-//         nodeId
-//         name
-//       }
-//     }
-//   }
-// `;
-
-// const DELETE_KEY = gql`
-//   mutation DeleteKey($nodeId: ID!) {
-//     deleteTranslationKey(input: { nodeId: $nodeId }) {
-//       translationKey {
-//         nodeId
-//         name
-//       }
-//     }
-//   }
-// `;
+// removeLanguage mutation (generates useRemoveLanguageMutation hook)
+gql`
+  mutation RemoveTranslationKey($id: String!) {
+    removeTranslationKey(id: $id)
+  }
+`;
 
 export default function TranslationKey(props: TranslationKeyProps) {
   const [isActive, setIsActive] = useState(false);
   const [currentValue, setCurrentValue] = useState(props.translationKey);
-  const { translationKey } = props;
+  const { translationKey, translationKeyId } = props;
 
+  // setup addProject mutation
+  const [removeTranslationKey, removeTranslationKeyResult] = useRemoveTranslationKeyMutation({
+    refetchQueries: ["ProjectTranslations"],
+    awaitRefetchQueries: true,
+  });
   if (!translationKey) {
     return null;
   }
   // useEffect(() => ref.focus(), [isActive]);
 
-//   const [deleteKey] = useMutation(DELETE_KEY);
-//   const [updateKey] = useMutation(UPDATE_KEY);
+  //   const [deleteKey] = useMutation(DELETE_KEY);
+  //   const [updateKey] = useMutation(UPDATE_KEY);
 
-
-const handleUpdateKey = (
-  updateKey: any,
-  keyId: string | null,
-  ref: any,
-  e: any
-  ) => {
+  const handleUpdateKey = (e: any) => {
     console.log("handleUpdateKey");
     /*
     e.preventDefault();
@@ -68,42 +53,40 @@ const handleUpdateKey = (
       variables: { nodeId: keyId, name: ref.innerText },
     });*/
   };
-  
-  const handleDeleteKey = (deleteKey: any, keyId: string | null, e: any) => {
-    console.log("handleDeleteKey");
-    /*  e.preventDefault();
-    
-    deleteKey({
-      refetchQueries: ["ProjectView"],
-      variables: { nodeId: keyId },
-    });*/
 
+  const handleDeleteKey = async (e: any) => {
+    console.log("handleDeleteKey");
+    e.preventDefault();
+
+    await removeTranslationKey({
+      variables: { id: translationKeyId },
+    });
   };
 
   return (
     <div className="translation-key-container">
-      <div className="delete-icon" onClick={(e: any) => handleDeleteKey(null, translationKey, e)}>
+      <div
+        className="styled-translation-key"
+        contentEditable={isActive}
+        suppressContentEditableWarning={true}
+        onClick={(e: any) => {
+          setIsActive(true);
+        }}
+      >
+        {translationKey}
+      </div>
+
+      <div className="delete-icon" onClick={(e: any) => handleDeleteKey(e)}>
         &times;
       </div>
-     
-        <div className="styled-translation-key" 
-          contentEditable={isActive}
-          suppressContentEditableWarning={true}
-          onClick={(e:any) => {
-            setIsActive(true);
-          }}
-          >
-          {translationKey}
-        </div>
-        
-        { /*isNotSaved && (
+
+      {/*isNotSaved && (
           <form
             onSubmit={(e) => handleUpdateKey(null, key, ref, e)}
           >
             <button type="submit">&#x2713;</button>
         </form> 
         )}*/}
-     
     </div>
   );
-};
+}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./login-form.scss";
 import classnames from "classnames";
 import { gql } from "@apollo/client";
@@ -29,7 +29,7 @@ gql`
 
 export default function LogInForm(props: any) {
   const history = useHistory();
-  const { register, handleSubmit, errors, watch } = useForm<LoginFormValues>();
+  const { register, handleSubmit, errors } = useForm<LoginFormValues>();
 
   // setup login mutation
   const [login, loginResult] = useLoginMutation({
@@ -38,7 +38,7 @@ export default function LogInForm(props: any) {
   });
 
   // get combined client and server side field errors
-  const fieldError = getFieldErrors(loginResult.error, errors);
+  // const fieldError = getFieldErrors(loginResult.error, errors);
 
   // login user on submit
   const onSubmit: SubmitHandler<LoginFormValues> = async ({ email, password }) => {

@@ -1,8 +1,8 @@
 import * as React from "react";
 import "./header.scss";
-import { useMutation, gql } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { useLogoutMutation } from "../../schema";
-import { useHistory, useLocation, Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useAppContext } from "../../projectState/AppContext";
 import Paths from "../../Paths";
 
@@ -15,7 +15,7 @@ gql`
 
 export default function Header(props: any) {
   const { isAuthenticated } = useAppContext();
-  const [logout, logoutResult] = useLogoutMutation({
+  const [logout, _logoutResult] = useLogoutMutation({
     refetchQueries: ["Viewer"],
     awaitRefetchQueries: true,
   });
@@ -40,10 +40,6 @@ export default function Header(props: any) {
 
   return (
     <div className="header-container">
-      <div>
-        <span>Welcome: </span>
-        <strong>{"Pärt Veidenberg"}</strong>
-      </div>
       <div>
         {isAuthenticated ? (
           <button className="logout-button" onClick={() => handleLogout()}>

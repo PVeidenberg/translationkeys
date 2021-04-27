@@ -17,7 +17,7 @@ export default mutationField("removeProject", {
 
     try {
       result = await ProjectEntity.createQueryBuilder("project").delete().where("id = :id", { id: args.id }).execute();
-      console.log("result", result);
+      // console.log("result", result);
     } catch (err) {
       console.log("Delete project failed", err);
     }

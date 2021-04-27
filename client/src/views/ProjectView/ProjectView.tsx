@@ -27,12 +27,9 @@ gql`
 
 export default function ProjectView(props: any) {
   const project = props.location.state;
-  // console.log("project", project);
 
   // attempt to get projectTranslations list
   const { data, loading, error } = useProjectTranslationsQuery({ variables: { projectId: project.id } });
-
-  // console.log("useProjectTranslationsQuery", data);
 
   // handle error
   if (error) {
@@ -48,7 +45,7 @@ export default function ProjectView(props: any) {
     <div className="view projects-view">
       {data ? (
         <div key={project.id}>
-          <ProjectHeader project={project.projectName} />
+          <ProjectHeader projectInfo={project} />
           <div className="table-container">
             <TranslationsTable translations={data} />
           </div>

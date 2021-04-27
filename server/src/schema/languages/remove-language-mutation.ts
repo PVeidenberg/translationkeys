@@ -8,26 +8,26 @@ export default mutationField("removeLanguage", {
   },
   description: "Deletes excisting language",
   resolve: async (_parent, args, context) => {
+    console.log("removeLanguage");
     const { viewer } = context;
-    let result;
 
     if (!viewer) {
       throw new Error("Not authenticated!!");
     }
 
     try {
-      result = await LanguageEntity.createQueryBuilder("language")
+      const result = await LanguageEntity.createQueryBuilder("language")
         .delete()
         .where("id = :id", { id: args.id })
         .execute();
-      console.log("result", result);
+
+      if (result.affected && result.affected > 0) {
+        return true;
+      } else {
+        return false;
+      }
     } catch (err) {
       console.log("Delete language failed", err);
-    }
-
-    if (result["affected"] > 0) {
-      return true;
-    } else {
       return false;
     }
   },
